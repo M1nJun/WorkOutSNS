@@ -37,11 +37,6 @@ function HomePage({setJwt}) {
       .catch(() => {alert("Create new account failed")});
     }
 
-    function handleLogout() {
-        alert("You are logged out of your account.");
-        setJwt('');
-    }
-
     let nameInput = useRef();
     let passwordInput = useRef();
 
@@ -66,8 +61,6 @@ function HomePage({setJwt}) {
             <p>User name: <input type="text" ref={nameInput} /></p>
             <p>Password: <input type="text" ref={passwordInput} /></p>
             <p><button onClick={loginAction}>Log In</button><button onClick={newAction}>New Account</button></p>
-            <h4>Log out of your account</h4>
-            <p><button onClick={handleLogout}>Log Out</button></p>
         </div>
       )}
     </div> 

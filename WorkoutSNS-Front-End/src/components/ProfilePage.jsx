@@ -36,6 +36,11 @@ function ProfilePage() {
         }).then(response => processAlert(response,"Profile created."));
     }
 
+    function handleLogout() {
+        alert("You are logged out of your account.");
+        setJwt('');
+    }
+
     if(jwt.length == 0)
         return (
             <p>You are not logged in to your account.</p>
@@ -49,6 +54,8 @@ function ProfilePage() {
             <p>Your email: <input type="text" ref={emailInput} defaultValue={profile.email}/></p>
             <p>Your bio: <input type="text" ref={bioInput} defaultValue={profile.bio}/></p>
             <p><button onClick={updateProfile}>Update Profile</button></p>
+            <h4>Log out of your account</h4>
+            <p><button onClick={handleLogout}>Log Out</button></p>
             </>
         );
     else

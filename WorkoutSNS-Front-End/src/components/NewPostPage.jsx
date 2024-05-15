@@ -3,6 +3,13 @@ import { useState,useRef,useContext } from "react";
 import AuthContext from "../AuthContext";
 import { silentJSON, processAlert } from "../FetchRoutines";
 const NewPostPage = () =>{
+    
+
+    //get the workout types from mysql
+    //get the subworkout types from mysql
+    //get the exercice from mysql
+
+
     //will figure out how to get date from system later
     dateInput = useRef();
     titleInput = useRef();
