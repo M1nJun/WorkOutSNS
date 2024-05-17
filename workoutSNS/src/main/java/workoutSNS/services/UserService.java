@@ -1,13 +1,17 @@
 package workoutSNS.services;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import workoutSNS.entities.Profile;
 import workoutSNS.entities.User;
+import workoutSNS.dtos.ProfileDTO;
 import workoutSNS.dtos.UserDTO;
+import workoutSNS.repositories.ProfileRepository;
 import workoutSNS.repositories.UserRepository;
 
 @Service
@@ -17,6 +21,9 @@ public class UserService {
   
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	ProfileRepository profileRepository;
   
 	public String save(UserDTO user) {
 		List<User> existing = userRepository.findByUsername(user.getUsername());
@@ -42,5 +49,29 @@ public class UserService {
 			u = null;
 		}
 		return u;	
+	}
+	
+	public String saveProfile(UUID userid,ProfileDTO profile) {
+		Optional<User> maybeUser = userRepository.findById(userid);
+		if(!maybeUser.isPresent())
+			return "Bad Id";
+		
+		User user = maybeUser.get();
+		if(user.getProfile() != null)
+			return "Duplicate";
+		
+		Profile newProfile = new Profile(profile);
+		newProfile.setUser(user);
+		profileRepository.save(newProfile);
+		
+		return "Created";
+	}
+	
+	public Profile findProfile(UUID userid) {
+		Optional<User> maybeUser = userRepository.findById(userid);
+		if(!maybeUser.isPresent())
+			return null;
+		
+		return maybeUser.get().getProfile();
 	}
 }
