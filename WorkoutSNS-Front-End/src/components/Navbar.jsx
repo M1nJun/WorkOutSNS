@@ -9,47 +9,50 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   NavigationMenuViewport,
-} from "@/components/ui/navigation-menu"
+} from "@/components/ui/navigation-menu";
 
-import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
-//className={navigationMenuTriggerStyle()}
+import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 
-import "../styles/Navbar.css";
-
-
-
- 
 const Navbar = () => {
   return (
-    <NavigationMenu className="sidebar">
-      <NavigationMenuItem>
-        <Link to="/">
-          <NavigationMenuLink className={navigationMenuTriggerStyle()}>Home</NavigationMenuLink>
-        </Link>
-      </NavigationMenuItem>
-
-      <NavigationMenuItem>
-        <NavigationMenuTrigger>Account</NavigationMenuTrigger>
-        <NavigationMenuContent>
-          <Link to="/profile">
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>Profile</NavigationMenuLink>
-          </Link>
-        </NavigationMenuContent>
-      </NavigationMenuItem>
-
-      <NavigationMenuItem>
-        <Link to="/search">
-          <NavigationMenuLink className={navigationMenuTriggerStyle()}>Search</NavigationMenuLink>
-        </Link>
-      </NavigationMenuItem>
-
-      <NavigationMenuItem>
-        <Link to="/newPost">
-          <NavigationMenuLink className={navigationMenuTriggerStyle()}>New Post</NavigationMenuLink>
-        </Link>
-      </NavigationMenuItem>
-    </NavigationMenu>
+    <nav>
+      <Link to="/">Home</Link>{" "}
+      <Link to="/profile">Profile</Link>{" "}
+      <Link to="/search">Search</Link>{" "}
+      <Link to="/newPost">New Post</Link>{" "}
+    </nav>
   );
 };
 
 export default Navbar;
+
+    // <NavigationMenu className="sidebar">
+    //   <NavigationMenuItem>
+    //     <NavigationMenuLink as={Link} to="/" className={navigationMenuTriggerStyle()}>
+    //       Home
+    //     </NavigationMenuLink>
+    //   </NavigationMenuItem>
+
+    //   <NavigationMenuList>
+    //     <NavigationMenuItem>
+    //       <NavigationMenuTrigger>Account</NavigationMenuTrigger>
+    //       <NavigationMenuContent>
+    //         <NavigationMenuLink as={Link} to="/profile" className={navigationMenuTriggerStyle()}>
+    //           Profile
+    //         </NavigationMenuLink>
+    //       </NavigationMenuContent>
+    //     </NavigationMenuItem>
+    //   </NavigationMenuList>
+
+    //   <NavigationMenuItem>
+    //     <NavigationMenuLink as={Link} to="/search" className={navigationMenuTriggerStyle()}>
+    //       Search
+    //     </NavigationMenuLink>
+    //   </NavigationMenuItem>
+
+    //   <NavigationMenuItem>
+    //     <NavigationMenuLink as={Link} to="/newPost" className={navigationMenuTriggerStyle()}>
+    //       New Post
+    //     </NavigationMenuLink>
+    //   </NavigationMenuItem>
+    // </NavigationMenu>
