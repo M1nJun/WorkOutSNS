@@ -29,13 +29,23 @@ public class User {
 	
 	@OneToOne(mappedBy="user")
 	private Profile profile;
-//	@OneToMany(mappedBy="user")
-//	List<Review> reviews;
+	
+	@OneToMany(mappedBy="user")
+	List<Post> posts;
+	
 //	@OneToMany(mappedBy="user")
 //	List<Response> responses;
 	
 	public Profile getProfile() {
 		return profile;
+	}
+
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
 	}
 
 	public void setProfile(Profile profile) {
@@ -68,12 +78,6 @@ public class User {
 		this.password = password;
 	}
 	
-//	public List<Review> getReviews() {
-//		return reviews;
-//	}
-//
-//	public void setReviews(List<Review> reviews) {
-//		this.reviews = reviews;
-//	}
+	
 
 }
