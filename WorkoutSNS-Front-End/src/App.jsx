@@ -15,6 +15,30 @@ function App() {
   const darkTheme = createTheme({
     palette: {
       mode: 'dark',
+      background: {
+        default: '#000000',
+      },
+      primary: {
+        main: '#FFFFFF',
+      },
+      text: {
+        primary: '#FFFFFF',
+        secondary: '#000000',
+      },
+    },
+    typography: {
+      h2: {
+        fontWeight: 'bold',
+      },
+      h4: {
+        fontWeight: 'bold',
+      },
+      body1: {
+        fontWeight: 'bold',
+      },
+      button: {
+        fontWeight: 'bold',
+      },
     },
   });
   

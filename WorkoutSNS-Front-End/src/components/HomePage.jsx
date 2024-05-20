@@ -4,10 +4,12 @@ import { useContext } from 'react';
 import AuthContext from '../AuthContext';
 import { Button, TextField,Box, Container, Typography, Grid,InputAdornment, IconButton } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import logo from "../logo.png";
 
 function HomePage({setJwt}) {
   const jwt = useContext(AuthContext);
   const [showPassword,setShowPassword] = useState(false);
+
 
     function confirmLogin(jwt) {
       alert("You are logged in to your account.");
@@ -63,8 +65,14 @@ function HomePage({setJwt}) {
         ):(
     <Container maxWidth="sm">
       <Box my={4}>
+        <Box display="flex" justifyContent="center" mb={2}>
+          <img src={logo} alt="Logo" style={{ maxWidth: '100%', height: 'auto' }} />
+        </Box>
+        <Typography variant="h4" align="center" gutterBottom>
+          Welcome to
+        </Typography>
         <Typography variant="h2" align="center" gutterBottom>
-          Welcome to our application!
+          Fit Connect
         </Typography>
         <Typography variant="h4" align="center" gutterBottom>
           Log in to your account

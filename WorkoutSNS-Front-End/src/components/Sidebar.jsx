@@ -5,8 +5,12 @@ import { Drawer, List, ListItem, ListItemText, ListItemButton, ListItemIcon } fr
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import { HomeIcon, SearchIcon } from 'lucide-react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { styled } from '@mui/system';
 
 const Sidebar = () => {
+  const StyledListItemIcon = styled(ListItemIcon)(({ theme }) => ({
+    color: '#000000',
+  }));
   return (
     <Drawer variant="permanent"
     anchor="left"
@@ -15,40 +19,40 @@ const Sidebar = () => {
       '& .MuiDrawer-paper': {
         width: 240,
         boxSizing: 'border-box',
-        backgroundColor: '#333', // Dark background color
-        color: '#fff', // Light text color
+        backgroundColor: '#FFFFFF', 
+        color: '#000000', 
       },
     }}>
       <List>
         <ListItem disablePadding>
           <ListItemButton component={Link} to="/">
-            <ListItemIcon>
+            <StyledListItemIcon>
                 <HomeIcon/>
-            </ListItemIcon>
+            </StyledListItemIcon>
             <ListItemText primary="Home" />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
           <ListItemButton component={Link} to="/profile">
-            <ListItemIcon>
+            <StyledListItemIcon>
                 <AccountCircleIcon></AccountCircleIcon>
-            </ListItemIcon>
+            </StyledListItemIcon>
             <ListItemText primary="Profile" />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
           <ListItemButton component={Link} to="/search">
-            <ListItemIcon>
+            <StyledListItemIcon>
                 <SearchIcon></SearchIcon>
-            </ListItemIcon>
+            </StyledListItemIcon>
             <ListItemText primary="Search" />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
           <ListItemButton component={Link} to="/newPost">
-            <ListItemIcon>
+            <StyledListItemIcon>
                 <PostAddIcon></PostAddIcon>
-            </ListItemIcon>
+            </StyledListItemIcon>
             <ListItemText primary="New Post" />
           </ListItemButton>
         </ListItem>
