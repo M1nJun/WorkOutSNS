@@ -1,6 +1,6 @@
 import { useState,useRef,useEffect,useContext } from "react";
 import AuthContext from "../AuthContext";
-import Post from "./Post";
+import PostCard from "./PostCard";
 
 function PostsFeed(){
     const [posts, setPosts] = useState([]);
@@ -27,11 +27,10 @@ function PostsFeed(){
     return(
         <>
         <div>
-            {/* I should map the posts to a post component*/}
             <h2>Posts Feed</h2>
             <ul>
                 {posts.map((post) => (
-                    <Post key={post.id} post={post}/>
+                    <PostCard key={post.id} post={post}/>
                 ))}
             </ul>
         </div>
