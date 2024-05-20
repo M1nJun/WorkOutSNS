@@ -4,10 +4,10 @@ import './App.css'
 import AuthContext from './AuthContext'
 import HomePage from './components/HomePage'
 import ProfilePage from './components/ProfilePage'
-import Navbar from './components/Navbar'
+//import Navbar from './components/Navbar'
 import SearchPage from './components/SearchPage'
 import NewPostPage from './components/NewPostPage'
-
+import Sidebar from './components/Sidebar'
 
 function App() {
   const [jwt,setJwt] = useState('');
@@ -16,7 +16,7 @@ function App() {
     <>
       <AuthContext.Provider value={jwt}>
         <BrowserRouter>
-          <Navbar></Navbar>
+          <Sidebar></Sidebar>
           {/* define routes and render the components associated with them*/}
           <Routes>
             <Route path="/" element={<HomePage setJwt={setJwt} />} />
