@@ -4,8 +4,8 @@ import { silentJSON, processAlert } from "../FetchRoutines";
 function ProfilePage() {
     useEffect(() => {getProfile()},[]);
     
-    let nameInput = useRef();
-    let interestsInput = useRef();
+    let firstNameInput = useRef();
+    let lastNameInput = useRef();
     let emailInput = useRef();
     let bioInput = useRef();
 
@@ -19,8 +19,9 @@ function ProfilePage() {
             .then(response=>{setProfile(response)});
     }
     function updateProfile() {
+        // in the backend this should delete the old profile and override it with a new profile
         const headers = {"Authorization" : "Bearer "+jwt,"Content-type" : "application/json; charset=UTF-8"};
-        const toPost = {fullname:nameInput.current.value,interests:interestsInput.current.value, email:emailInput.current.value, bio:bioInput.current.value};
+        const toPost = {firstname:firstNameInput.current.value, lastname:lastNameInput.current.value, email:emailInput.current.value, bio:bioInput.current.value};
         fetch("http://localhost:8085/profile/update", {
             method: "POST",
             body: JSON.stringify(toPost),
@@ -29,7 +30,7 @@ function ProfilePage() {
     }
     function createProfile() {
         const headers = {"Authorization" : "Bearer "+jwt,"Content-type" : "application/json; charset=UTF-8"};
-        const toPost = {fullname:nameInput.current.value,interests:interestsInput.current.value, email:emailInput.current.value, bio:bioInput.current.value};
+        const toPost = {firstname:firstNameInput.current.value, lastname:lastNameInput.current.value, email:emailInput.current.value, bio:bioInput.current.value};
         fetch("http://localhost:8085/profile/create", {
             method: "POST",
             body: JSON.stringify(toPost),
@@ -48,27 +49,138 @@ function ProfilePage() {
         );
     else if(profile)
         return (
-            <>
-            <h4>Edit your profile</h4>
-            <p>Your name: <input type="text" ref={nameInput} defaultValue={profile.fullname} /></p>
-            <p>Your interests: <input type="text" ref={interestsInput} defaultValue={profile.interests}/></p>
-            <p>Your email: <input type="text" ref={emailInput} defaultValue={profile.email}/></p>
-            <p>Your bio: <input type="text" ref={bioInput} defaultValue={profile.bio}/></p>
-            <p><button onClick={updateProfile}>Update Profile</button></p>
-            <h4>Log out of your account</h4>
-            <p><button onClick={handleLogout}>Log Out</button></p>
-            </>
+            <Container maxWidth="sm">
+                <Box my={4}>
+                    <Box display="flex" justifyContent="center" mb={2}>
+                    <img src={logo} alt="Logo" style={{ maxWidth: '100%', height: 'auto' }} />
+                    </Box>
+                    <Typography variant="h3" align="center" gutterBottom>
+                    Update Your Profile
+                    </Typography>
+                    <Box component="form" noValidate autoComplete="off">
+                    <Grid container spacing={2} justifyContent="center">
+                        <Grid item xs={6}>
+                            <TextField
+                                fullWidth
+                                label="First Name"
+                                variant="outlined"
+                                inputRef={firstNameInput}
+                                defaultValue= {profile.firstname}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                fullWidth
+                                label="Last Name"
+                                variant="outlined"
+                                inputRef={lastNameInput}
+                                defaultValue={profile.lastname}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                fullWidth
+                                label="Email"
+                                variant="outlined"
+                                inputRef={emailInput}
+                                defaultValue={profile.email}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                fullWidth
+                                label="Bio"
+                                variant="outlined"
+                                inputRef={bioInput}
+                                defaultValue={profile.bio}
+                            />
+                        </Grid>
+
+                        <Grid item xs={4} align="center">
+                            <Button
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                onClick={updateProfile}
+                            >
+                                Update Profile
+                            </Button>
+                        </Grid>
+                        <Grid item xs={4} align="center">
+                            <Button
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                onClick={handleLogout}
+                            >
+                                Log out
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    </Box>
+                </Box>
+            </Container>
+            
         );
     else
         return (
-            <>
-            <h4>Create your profile</h4>
-            <p>Your name: <input type="text" ref={nameInput} /></p>
-            <p>Your interests: <input type="text" ref={interestsInput} /></p>
-            <p>Your email: <input type="text" ref={emailInput} /></p>
-            <p>Your bio: <input type="text" ref={bioInput} /></p>
-            <p><button onClick={createProfile}>Create Profile</button></p>
-            </>
+            <Container maxWidth="sm">
+                <Box my={4}>
+                    <Box display="flex" justifyContent="center" mb={2}>
+                    <img src={logo} alt="Logo" style={{ maxWidth: '100%', height: 'auto' }} />
+                    </Box>
+                    <Typography variant="h3" align="center" gutterBottom>
+                    Create Your Profile
+                    </Typography>
+                    <Box component="form" noValidate autoComplete="off">
+                    <Grid container spacing={2} justifyContent="center">
+                        <Grid item xs={6}>
+                            <TextField
+                                fullWidth
+                                label="First Name"
+                                variant="outlined"
+                                inputRef={firstNameInput}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                fullWidth
+                                label="Last Name"
+                                variant="outlined"
+                                inputRef={lastNameInput}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                fullWidth
+                                label="Email"
+                                variant="outlined"
+                                inputRef={emailInput}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                fullWidth
+                                label="Bio"
+                                variant="outlined"
+                                inputRef={bioInput}
+                            />
+                        </Grid>
+
+                        <Grid item xs={4} align="center">
+                            <Button
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                onClick={createProfile}
+                            >
+                                Create Profile
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    </Box>
+                </Box>
+            </Container>
         );
 }
 

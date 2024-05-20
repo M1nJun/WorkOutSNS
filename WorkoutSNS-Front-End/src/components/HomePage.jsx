@@ -42,8 +42,8 @@ function HomePage({setJwt}) {
       .catch(() => {alert("Create new account failed")});
     }
 
-    let nameInput = useRef();
-    let passwordInput = useRef();
+    let nameInput = useRef(null);
+    let passwordInput = useRef(null);
 
     const loginAction = (e) => { handleLogin({name:nameInput.current.value,password:passwordInput.current.value}); }
     const newAction = (e) => { handleNewAccount({name:nameInput.current.value,password:passwordInput.current.value}); }

@@ -12,12 +12,11 @@ const SearchPage = () => {
     const handleSearch = async (query) => {
         try {
           // Request user search results from backend
+          const headers = {"Authorization" : "Bearer "+jwt,"Content-type" : "application/json; charset=UTF-8"};
           const userResponse = await fetch('http://localhost:8085/user/search', {
             method: 'POST',
             body: JSON.stringify({ query }),
-            headers: {
-              'Content-type': 'application/json; charset=UTF-8'
-            }
+            headers: headers,
           });
           const userResults = await userResponse.json();
       
@@ -25,9 +24,7 @@ const SearchPage = () => {
           const postResponse = await fetch('http://localhost:8085/post/search', {
             method: 'POST',
             body: JSON.stringify({ query }),
-            headers: {
-              'Content-type': 'application/json; charset=UTF-8'
-            }
+            headers: headers,
           });
           const postResults = await postResponse.json();
       
