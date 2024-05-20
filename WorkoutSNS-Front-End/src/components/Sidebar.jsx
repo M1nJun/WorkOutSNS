@@ -8,7 +8,17 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Sidebar = () => {
   return (
-    <Drawer variant="permanent" anchor="left">
+    <Drawer variant="permanent"
+    anchor="left"
+    sx={{
+      width: 180,
+      '& .MuiDrawer-paper': {
+        width: 240,
+        boxSizing: 'border-box',
+        backgroundColor: '#333', // Dark background color
+        color: '#fff', // Light text color
+      },
+    }}>
       <List>
         <ListItem disablePadding>
           <ListItemButton component={Link} to="/">

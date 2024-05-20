@@ -4,16 +4,27 @@ import './App.css'
 import AuthContext from './AuthContext'
 import HomePage from './components/HomePage'
 import ProfilePage from './components/ProfilePage'
-//import Navbar from './components/Navbar'
 import SearchPage from './components/SearchPage'
 import NewPostPage from './components/NewPostPage'
 import Sidebar from './components/Sidebar'
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
 function App() {
+
+  const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
+  
+  
   const [jwt,setJwt] = useState('');
 
   return (
     <>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline></CssBaseline>
       <AuthContext.Provider value={jwt}>
         <BrowserRouter>
           <Sidebar></Sidebar>
@@ -26,6 +37,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </AuthContext.Provider>
+    </ThemeProvider>
     </>
   )
 }
