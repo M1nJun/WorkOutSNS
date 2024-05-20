@@ -3,6 +3,7 @@ import AuthContext from "../AuthContext";
 import { silentJSON, processAlert } from "../FetchRoutines";
 function ProfilePage() {
     useEffect(() => {getProfile()},[]);
+    
     let nameInput = useRef();
     let interestsInput = useRef();
     let emailInput = useRef();
