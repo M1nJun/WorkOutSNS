@@ -64,7 +64,7 @@ function HomePage({setJwt}) {
         </Container>
         ):(
     <Container maxWidth="sm">
-      <Box my={4}>
+      <Box my={1}>
         <Box display="flex" justifyContent="center" mb={2}>
           <img src={logo} alt="Logo" style={{ maxWidth: '100%', height: 'auto' }} />
         </Box>
