@@ -2,6 +2,9 @@ import { useState,useRef,useEffect,useContext } from "react";
 import AuthContext from "../AuthContext";
 import { silentJSON, processAlert } from "../FetchRoutines";
 import { Button, TextField,Box, Container, Typography, Grid,InputAdornment, IconButton } from '@mui/material';
+import UpdateIcon from '@mui/icons-material/Update';
+import LogoutIcon from '@mui/icons-material/Logout';
+import CreateIcon from '@mui/icons-material/Create';
 
 function ProfilePage() {
     useEffect(() => {getProfile()},[]);
@@ -54,7 +57,7 @@ function ProfilePage() {
             <Container maxWidth="sm">
                 <Box my={4}>
                     <Box display="flex" justifyContent="center" mb={2}>
-                    <img src={logo} alt="Logo" style={{ maxWidth: '100%', height: 'auto' }} />
+                    <img src={logo} alt="Logo" style={{ maxWidth: '20%', height: 'auto' }} />
                     </Box>
                     <Typography variant="h3" align="center" gutterBottom>
                     Update Your Profile
@@ -104,6 +107,7 @@ function ProfilePage() {
                                 variant="contained"
                                 color="primary"
                                 onClick={updateProfile}
+                                startIcon={<UpdateIcon />} 
                             >
                                 Update Profile
                             </Button>
@@ -114,6 +118,7 @@ function ProfilePage() {
                                 variant="contained"
                                 color="primary"
                                 onClick={handleLogout}
+                                startIcon={<LogoutIcon />} 
                             >
                                 Log out
                             </Button>
@@ -129,7 +134,7 @@ function ProfilePage() {
             <Container maxWidth="sm">
                 <Box my={4}>
                     <Box display="flex" justifyContent="center" mb={2}>
-                    <img src={logo} alt="Logo" style={{ maxWidth: '100%', height: 'auto' }} />
+                    <img src={logo} alt="Logo" style={{ maxWidth: '20%', height: 'auto' }} />
                     </Box>
                     <Typography variant="h3" align="center" gutterBottom>
                     Create Your Profile
@@ -175,6 +180,7 @@ function ProfilePage() {
                                 variant="contained"
                                 color="primary"
                                 onClick={createProfile}
+                                startIcon={<CreateIcon></CreateIcon>}
                             >
                                 Create Profile
                             </Button>
