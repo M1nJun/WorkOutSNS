@@ -1,52 +1,42 @@
-package workoutSNS.entities;
+package workoutSNS.dtos;
 
-import workoutSNS.dtos.ProfileDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import workoutSNS.entities.Profile;
 
-@Entity
-@Table(name="profiles")
-public class Profile {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer profileID;
-	@OneToOne
-	@JoinColumn(name="userID")
-	private User user;
+public class ProfileDTO {
+	private int profileID;
+	private String userID;
 	private String firstname;
 	private String lastname;
 	private String email;
 	private String bio;
 	
-	public Profile() {}
+	public ProfileDTO() {}
 	
-	public Profile(ProfileDTO core) {
+	public ProfileDTO(Profile core) {
+		profileID = core.getProfileID().intValue();
+		userID = core.getUser().getUserID().toString();
 		firstname = core.getFirstname();
 		lastname = core.getLastname();
 		email = core.getEmail();
 		bio = core.getBio();
 	}
 	
-	
-	public Integer getProfileID() {
+
+
+	public int getProfileID() {
 		return profileID;
 	}
 
-	public void setProfileID(Integer profileID) {
+	public void setProfileID(int profileID) {
 		this.profileID = profileID;
 	}
 
-	public User getUser() {
-		return user;
+	public String getUserID() {
+		return userID;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserID(String userID) {
+		this.userID = userID;
 	}
 
 	public String getFirstname() {
@@ -80,5 +70,5 @@ public class Profile {
 	public void setBio(String bio) {
 		this.bio = bio;
 	}
-	
+
 }

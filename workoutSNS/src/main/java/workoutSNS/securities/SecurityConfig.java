@@ -27,7 +27,7 @@ public class SecurityConfig {
         .csrf(csrf -> csrf.disable())
         .sessionManagement(management -> management
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.POST, "/users", "/users/login").permitAll()
+        .authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.POST, "/user", "/user/login").permitAll()
         		.requestMatchers(HttpMethod.GET, "/restaurant/{id}", "/restaurant/all").permitAll()
                 .anyRequest().authenticated()
                 )

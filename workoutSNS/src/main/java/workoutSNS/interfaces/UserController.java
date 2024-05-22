@@ -14,7 +14,7 @@ import workoutSNS.dtos.UserDTO;
 import workoutSNS.services.UserService;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 @CrossOrigin(origins = "*")
 public class UserController {
 	
