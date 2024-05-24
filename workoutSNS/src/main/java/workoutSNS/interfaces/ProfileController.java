@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -32,7 +33,7 @@ public class ProfileController {
 	@PostMapping
 	public ResponseEntity<String> save(Authentication authentication, @RequestBody ProfileDTO profile){
 		String key = ps.save(profile);
-        if (key.equals("Error")) {
+        if (key.equals("Bad Id")) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Can not generate key");
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(key);

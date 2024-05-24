@@ -23,14 +23,12 @@ public class ProfileService {
 	UserRepository userRepository;
 	
 	public String save(ProfileDTO profile) {
-		 // Find existing profiles with the same email
-        List<Profile> existingProfiles = profileRepository.findByEmail(profile.getEmail());
+		// Find existing profiles with the same userID
+		Optional<User> u = userRepository.findById(UUID.fromString(profile.getUserID()));
+        Profile existingProfile = profileRepository.findByUser(u.get());
         
-        // Need to change logic: consider userID as a factor to empty out the row.
-        // or if the user that is posting right now is the person who is the owner of the email, then allow to delete.
-        // Delete the existing profiles
-        if (!existingProfiles.isEmpty()) {
-            profileRepository.deleteAll(existingProfiles);
+        if (existingProfile != null) {
+            profileRepository.delete(existingProfile); // Use delete() instead of deleteAll()
         }
         
         Profile newProfile = new Profile();
