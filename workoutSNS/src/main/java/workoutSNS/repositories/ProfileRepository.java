@@ -9,6 +9,5 @@ import workoutSNS.entities.User;
 import workoutSNS.entities.Profile;
 
 public interface ProfileRepository extends JpaRepository<Profile, Integer>{
-	List<Profile> findByEmail(String email);
 	Profile findByUser(User user);
 }

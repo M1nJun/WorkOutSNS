@@ -28,7 +28,7 @@ public class ProfileService {
         Profile existingProfile = profileRepository.findByUser(u.get());
         
         if (existingProfile != null) {
-            profileRepository.delete(existingProfile); // Use delete() instead of deleteAll()
+            profileRepository.delete(existingProfile);
         }
         
         Profile newProfile = new Profile();
@@ -49,7 +49,7 @@ public class ProfileService {
 	public Profile findByUser(String id){
 		Optional<User> u = userRepository.findById(UUID.fromString(id));
 		if(u.isPresent())
-			return profileRepository.findByUser(u.get());
+			return u.get().getProfile();
 		return new Profile();
 	}
 }

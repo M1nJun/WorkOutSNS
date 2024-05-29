@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,10 +25,12 @@ public class User {
 	private UUID userID;
 	private String username;
 	private String password;
-//	@OneToMany(mappedBy="user")
-//	List<Review> reviews;
+	@OneToMany(mappedBy="user")
+	List<Post> posts;
 //	@OneToMany(mappedBy="user")
 //	List<Response> responses;
+	@OneToOne(mappedBy="user")
+	private Profile profile;
 	
 	public User() {}
 
@@ -54,6 +57,24 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
+
+	public Profile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Profile profile) {
+		this.profile = profile;
+	}
+	
+	
 	
 //	public List<Review> getReviews() {
 //		return reviews;
