@@ -5,6 +5,7 @@ import { Button, TextField,Box, Container, Typography, Grid,InputAdornment, Icon
 import UpdateIcon from '@mui/icons-material/Update';
 import LogoutIcon from '@mui/icons-material/Logout';
 import CreateIcon from '@mui/icons-material/Create';
+import logo from "../logo.png";
 
 function ProfilePage() {
     useEffect(() => {getProfile()},[]);
@@ -20,14 +21,13 @@ function ProfilePage() {
 
     function getProfile() {
         const headers = {"Authorization" : "Bearer "+jwt};
-        fetch("http://localhost:8085/profile", {method:"GET",headers:headers}).then(silentJSON)
-            .then(response=>{setProfile(response)});
+        fetch("http://localhost:8085/profile/user", {method:"GET",headers:headers}).then(silentJSON)
+        .then(response=>{setProfile(response)});
     }
     function updateProfile() {
-        // in the backend this should delete the old profile and override it with a new profile
         const headers = {"Authorization" : "Bearer "+jwt,"Content-type" : "application/json; charset=UTF-8"};
         const toPost = {firstname:firstNameInput.current.value, lastname:lastNameInput.current.value, email:emailInput.current.value, bio:bioInput.current.value};
-        fetch("http://localhost:8085/profile/update", {
+        fetch("http://localhost:8085/profile", {
             method: "POST",
             body: JSON.stringify(toPost),
             headers: headers
@@ -36,7 +36,7 @@ function ProfilePage() {
     function createProfile() {
         const headers = {"Authorization" : "Bearer "+jwt,"Content-type" : "application/json; charset=UTF-8"};
         const toPost = {firstname:firstNameInput.current.value, lastname:lastNameInput.current.value, email:emailInput.current.value, bio:bioInput.current.value};
-        fetch("http://localhost:8085/profile/create", {
+        fetch("http://localhost:8085/profile", {
             method: "POST",
             body: JSON.stringify(toPost),
             headers: headers

@@ -1,71 +1,72 @@
-import { useRef, useState } from "react";
-import { processJSON, processText } from "../FetchRoutines";
-import { useContext } from "react";
+import React from 'react';
 import AuthContext from "../AuthContext";
-import PostsFeed from "./PostsFeed";
-import {
-  Button,
-  TextField,
-  Box,
-  Container,
-  Typography,
-  Grid,
-  InputAdornment,
-  IconButton,
-} from "@mui/material";
+import { useContext } from "react";
+import { useRef, useState } from "react";
 import { Link } from 'react-router-dom';
+import { processJSON, processText } from "../FetchRoutines";
+import {
+    Button,
+    TextField,
+    Box,
+    Container,
+    Typography,
+    Grid,
+    InputAdornment,
+    IconButton,
+  } from "@mui/material";
+  
+  import { Visibility, VisibilityOff } from "@mui/icons-material";
+  import logo from "../logo.png";
 
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import logo from "../logo.png";
+const NewAccountPage = () => {
 
-function HomePage({ setJwt }) {
-  const jwt = useContext(AuthContext);
-  const [showPassword, setShowPassword] = useState(false);
+    const jwt = useContext(AuthContext);
+    const [showPassword, setShowPassword] = useState(false);
 
-  function confirmLogin(jwt) {
-    alert("You are logged in to your account.");
-    setJwt(jwt);
-  }
+    let nameInput = useRef(null);
+    let passwordInput = useRef(null);
 
-  function handleLogin(user) {
-    fetch("http://localhost:8085/user/login", {
-      method: "POST",
-      body: JSON.stringify(user),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-      //.then(processJSON)
-      .then(confirmLogin)
-      .catch((error) => {
-        Console.log(error);
-        alert("Login failed");
-      });
-  }
+    function confirmLogin(jwt) {
+        alert("You are logged in to your account.");
+        setJwt(jwt);
+    }
 
-  let nameInput = useRef(null);
-  let passwordInput = useRef(null);
+    function handleNewAccount(user) {
+        fetch("http://localhost:8085/user", {
+          method: "POST",
+          body: JSON.stringify(user),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+          .then(processText)
+          .then(confirmLogin)
+          .catch(() => {
+            alert("Create new account failed");
+          });
+      }
 
-  const loginAction = (e) => {
-    handleLogin({
-      username: nameInput.current.value,
-      password: passwordInput.current.value,
-    });
-  };
+    const CreateNewAccount = (e) => {
+        handleNewAccount({
+          username: nameInput.current.value,
+          password: passwordInput.current.value,
+        });
+      };
 
-  const handleTogglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+      //need to attach it to new account component
+    const handleTogglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
-  return (
-    <div>
-      {jwt ? (
+    return(
+        <>
+        {jwt ? (
         <Container maxWidth="md">
           <div>
             <PostsFeed jwt={jwt} />
           </div>
         </Container>
-      ) : (
+      ):(
         <Container maxWidth="sm">
           <Box my={1}>
             <Box display="flex" justifyContent="center" mb={2}>
@@ -82,7 +83,7 @@ function HomePage({ setJwt }) {
               Fit Connect
             </Typography>
             <Typography variant="h4" align="center" gutterBottom>
-              Log in to your account
+              Create Your Account
             </Typography>
             <Box component="form" noValidate autoComplete="off">
               <Grid container spacing={2} justifyContent="center">
@@ -121,31 +122,17 @@ function HomePage({ setJwt }) {
                     fullWidth
                     variant="contained"
                     color="primary"
-                    onClick={loginAction}
+                    onClick={CreateNewAccount}
                   >
-                    Log In
-                  </Button>
-                </Grid>
-                <Grid item xs={12} align="center">
-                  <Typography variant="body1">
-                    Do you not have an account?
-                  </Typography>
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    component={Link}
-                    to="/new-account"
-                  >
-                    New Account
+                    Create Your Account
                   </Button>
                 </Grid>
               </Grid>
             </Box>
           </Box>
-        </Container>
-      )}
-    </div>
-  );
+        </Container>)}
+        </>
+    )
 }
 
-export default HomePage;
+export default NewAccountPage;

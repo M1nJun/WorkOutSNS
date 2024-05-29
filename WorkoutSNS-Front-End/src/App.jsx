@@ -9,6 +9,7 @@ import NewPostPage from './components/NewPostPage'
 import Sidebar from './components/Sidebar'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import NewAccountPage from './components/NewAccountPage'
 
 function App() {
 
@@ -58,6 +59,7 @@ function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/newPost" element={<NewPostPage />} />
+            <Route path="/new-account" element={<NewAccountPage/>} />
           </Routes>
         </BrowserRouter>
       </AuthContext.Provider>
