@@ -35,8 +35,7 @@ function HomePage({ setJwt }) {
         "Content-type": "application/json; charset=UTF-8",
       },
     })
-      //.then(processJSON)
-      .then(confirmLogin)
+      .then(response => response.text().then(data =>confirmLogin(data)))
       .catch((error) => {
         Console.log(error);
         alert("Login failed");

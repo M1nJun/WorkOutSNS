@@ -18,9 +18,9 @@ const SearchResults = ({ results }) => {
   return (
     <div>
       <h2>User Results</h2>
-      {renderUserResults(userResults)}
+      {userResults.length > 0 ? renderPostResults(results) : <p>No results found</p>}
       <h2>Post Results</h2>
-      {renderPostResults(postResults)}
+      {postResults.length > 0 ? renderPostResults(results) : <p>No results found</p>}
     </div>
   );
 };

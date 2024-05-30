@@ -7,8 +7,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import CreateIcon from '@mui/icons-material/Create';
 import logo from "../logo.png";
 
-function ProfilePage() {
-    useEffect(() => {getProfile()},[]);
+function ProfilePage({setJwt}) {
     
     let firstNameInput = useRef();
     let lastNameInput = useRef();
@@ -17,6 +16,15 @@ function ProfilePage() {
 
     const jwt = useContext(AuthContext);
     const [profile,setProfile] = useState();
+    useEffect(() => {getProfile()},[]);
+    useEffect(() => {
+        if (profile) {
+            firstNameInput.current.value = profile.firstname || '';
+            lastNameInput.current.value = profile.lastname || '';
+            emailInput.current.value = profile.email || '';
+            bioInput.current.value = profile.bio || '';
+        }
+    }, [profile]);
     
 
     function getProfile() {

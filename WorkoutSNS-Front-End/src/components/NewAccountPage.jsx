@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { useRef, useState } from "react";
 import { Link } from 'react-router-dom';
 import { processJSON, processText } from "../FetchRoutines";
+import PostsFeed from "./PostsFeed";
 import {
     Button,
     TextField,
@@ -18,7 +19,7 @@ import {
   import { Visibility, VisibilityOff } from "@mui/icons-material";
   import logo from "../logo.png";
 
-const NewAccountPage = () => {
+const NewAccountPage = ({ setJwt }) => {
 
     const jwt = useContext(AuthContext);
     const [showPassword, setShowPassword] = useState(false);
@@ -39,11 +40,9 @@ const NewAccountPage = () => {
             "Content-type": "application/json; charset=UTF-8",
           },
         })
-          .then(processText)
-          .then(confirmLogin)
-          .catch(() => {
-            alert("Create new account failed");
-          });
+        .then(confirmLogin)
+
+        
       }
 
     const CreateNewAccount = (e) => {

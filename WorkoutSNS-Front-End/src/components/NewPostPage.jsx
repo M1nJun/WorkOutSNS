@@ -15,7 +15,6 @@ const NewPostPage = () =>{
     //will figure out how to get date from system later
     const dateInput = useRef();
     const titleInput = useRef();
-    const peopleTagsInput = useRef();
 
     //these two types need to be from a drop down menu
     const workoutTypeInput = useRef();
@@ -34,7 +33,7 @@ const NewPostPage = () =>{
 
     const inputRefs = [
         titleInput, captionInput, dateInput, workoutTypeInput, subWorkoutTypeInput,
-        exerciseInput, durationInput, caloriesInput, tipsInput, peopleTagsInput, tagsInput
+        exerciseInput, durationInput, caloriesInput, tipsInput, tagsInput
     ];
 
     const handleInputChange = () => {
@@ -60,17 +59,17 @@ const NewPostPage = () =>{
         const toPost = {
             date: dateInput.current.value,
             title: titleInput.current.value,
-            tagPeople: peopleTagsInput.current.value,
-            workoutType: workoutTypeInput.current.value,
-            subWorkoutType: subWorkoutTypeInput.current.value,  
+            body: captionInput.current.value,
+            workout: workoutTypeInput.current.value,
+            subWorkout: subWorkoutTypeInput.current.value,  
             exercise: exerciseInput.current.value,
-            caption: captionInput.current.value,
             tips: tipsInput.current.value,
-            duration: durationInput.current.value,
-            calories: caloriesInput.current.value,
-            tags: tagsInput.current.value,
+            duration: parseInt(durationInput.current.value, 10),
+            calories: parseInt(caloriesInput.current.value, 10),
+            //convert the tags to an arrray before sending it as a dto
+            tags: tagsInput.current.value.split(',').map(tag => tag.trim()), 
         };
-        fetch("http://localhost:8085/posts/create", {
+        fetch("http://localhost:8085/post", {
             method: "POST",
             body: JSON.stringify(toPost),
             headers: headers
@@ -182,16 +181,6 @@ const NewPostPage = () =>{
                                 fullWidth
                                 variant="outlined"
                                 inputRef={tipsInput}
-                                onChange={handleInputChange}
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <InputLabel htmlFor="peopleTagged" sx={{ color: 'white' }}>Tag People</InputLabel>
-                            <TextField
-                                fullWidth
-                               
-                                variant="outlined"
-                                inputRef={peopleTagsInput}
                                 onChange={handleInputChange}
                             />
                         </Grid>

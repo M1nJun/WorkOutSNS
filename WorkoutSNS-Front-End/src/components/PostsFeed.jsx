@@ -13,7 +13,7 @@ function PostsFeed(){
     
     function getPosts(){
         // Fetch posts data using the JWT token
-        fetch('http://localhost:8085/posts', {
+        fetch('http://localhost:8085/post', {
             method: 'GET',
             headers: {
             Authorization: `Bearer ${jwt}`,

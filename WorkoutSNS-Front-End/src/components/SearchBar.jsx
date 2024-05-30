@@ -15,7 +15,7 @@ const SearchBar = ({ onSearch }) => {
     setQuery(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event) => { 
     //page wont reload when user tries to search
     event.preventDefault();
     //user wont be allowed to submit search queries that are empty

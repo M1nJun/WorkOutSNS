@@ -52,14 +52,14 @@ function App() {
       <CssBaseline></CssBaseline>
       <AuthContext.Provider value={jwt}>
         <BrowserRouter>
-          <Sidebar></Sidebar>
+          <Sidebar> </Sidebar>
           {/* define routes and render the components associated with them*/}
           <Routes>
             <Route path="/" element={<HomePage setJwt={setJwt} />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile" element={<ProfilePage setJwt={setJwt}/>} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/newPost" element={<NewPostPage />} />
-            <Route path="/new-account" element={<NewAccountPage/>} />
+            <Route path="/new-account" element={<NewAccountPage setJwt={setJwt}/>} />
           </Routes>
         </BrowserRouter>
       </AuthContext.Provider>
