@@ -1,0 +1,76 @@
+-- Create the database
+CREATE DATABASE workoutSNS;
+
+-- Use the database
+USE workoutSNS;
+
+-- Create the 'users' table
+CREATE TABLE users (
+    userID VARCHAR(45) PRIMARY KEY,
+    username VARCHAR(128) NOT NULL,
+    password VARCHAR(128) NOT NULL
+);
+
+-- Create the 'profiles' table
+CREATE TABLE profiles (
+    profileID INT AUTO_INCREMENT PRIMARY KEY,
+    userID VARCHAR(45),
+    firstname VARCHAR(36),
+    lastname VARCHAR(36),
+    email VARCHAR(64),
+    bio VARCHAR(256),
+    FOREIGN KEY (userID) REFERENCES users(userID)
+);
+
+-- Create the 'posts' table
+CREATE TABLE posts (
+    postID INT AUTO_INCREMENT PRIMARY KEY,
+    userID VARCHAR(45),
+    date DATE,
+    title VARCHAR(64),
+    body VARCHAR(256),
+    workout VARCHAR(45),
+    subworkout VARCHAR(45),
+    exercise VARCHAR(45),
+    duration INT,
+    calories INT,
+    tips VARCHAR(256),
+    FOREIGN KEY (userID) REFERENCES users(userID)
+);
+
+-- Create the 'comments' table
+CREATE TABLE comments (
+    commentID INT AUTO_INCREMENT PRIMARY KEY,
+    userID VARCHAR(36),
+    content VARCHAR(256),
+    date DATE,
+    FOREIGN KEY (userID) REFERENCES users(userID)
+);
+
+-- Create the 'responses' table
+CREATE TABLE responses (
+    responseID INT AUTO_INCREMENT PRIMARY KEY,
+    userID VARCHAR(36),
+    commentID INT,
+    content VARCHAR(256),
+    date DATE,
+    FOREIGN KEY (userID) REFERENCES users(userID),
+    FOREIGN KEY (commentID) REFERENCES comments(commentID)
+);
+
+-- Create the 'follows' table
+CREATE TABLE follows (
+    followID INT AUTO_INCREMENT PRIMARY KEY,
+    follower VARCHAR(36),
+    followed VARCHAR(36),
+    FOREIGN KEY (follower) REFERENCES users(userID),
+    FOREIGN KEY (followed) REFERENCES users(userID)
+);
+
+-- Create the 'tags' table
+CREATE TABLE tags (
+    tagID INT AUTO_INCREMENT PRIMARY KEY,
+    postID INT,
+    tag VARCHAR(128),
+    FOREIGN KEY (postID) REFERENCES posts(postID)
+);
