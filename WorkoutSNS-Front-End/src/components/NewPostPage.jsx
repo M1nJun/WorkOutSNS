@@ -11,28 +11,20 @@ const NewPostPage = () =>{
     const [progress, setProgress] = useState(0);
     const [postCreated, setPostCreated] = useState(false);
 
-
-    //will figure out how to get date from system later
-    const dateInput = useRef();
     const titleInput = useRef();
-
-    //these two types need to be from a drop down menu
     const workoutTypeInput = useRef();
     const subWorkoutTypeInput = useRef();
-
     const exerciseInput = useRef();
     const captionInput = useRef();
     const tipsInput = useRef();
     const durationInput = useRef();
     const caloriesInput = useRef();
-    
-    //we need to add a tags property because its necessary for filtering and search
     const tagsInput = useRef();
     
     //need to add an input for uploading image that goes with the new post
 
     const inputRefs = [
-        titleInput, captionInput, dateInput, workoutTypeInput, subWorkoutTypeInput,
+        titleInput, captionInput,workoutTypeInput, subWorkoutTypeInput,
         exerciseInput, durationInput, caloriesInput, tipsInput, tagsInput
     ];
 
@@ -57,7 +49,6 @@ const NewPostPage = () =>{
     function createNewPost() {
         const headers = {"Authorization" : "Bearer "+ jwt,"Content-type" : "application/json; charset=UTF-8"};
         const toPost = {
-            date: dateInput.current.value,
             title: titleInput.current.value,
             body: captionInput.current.value,
             workout: workoutTypeInput.current.value,
@@ -118,15 +109,6 @@ const NewPostPage = () =>{
                                 fullWidth
                                 variant="outlined"
                                 inputRef={captionInput}
-                                onChange={handleInputChange}
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <InputLabel htmlFor="date" sx={{ color: 'white' }}>Date</InputLabel>
-                            <TextField
-                                fullWidth
-                                variant="outlined"
-                                inputRef={dateInput}
                                 onChange={handleInputChange}
                             />
                         </Grid>

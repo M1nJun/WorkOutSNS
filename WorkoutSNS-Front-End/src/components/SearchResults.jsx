@@ -15,12 +15,17 @@ const SearchResults = ({ results }) => {
     // Render postResults...
   };
 
+  /*
+   {userResults.length > 0 ? renderPostResults(results) : <p>No results found</p>}
+   {postResults.length > 0 ? renderPostResults(results) : <p>No results found</p>}
+  */
+
   return (
     <div>
       <h2>User Results</h2>
-      {userResults.length > 0 ? renderPostResults(results) : <p>No results found</p>}
+     
       <h2>Post Results</h2>
-      {postResults.length > 0 ? renderPostResults(results) : <p>No results found</p>}
+      
     </div>
   );
 };

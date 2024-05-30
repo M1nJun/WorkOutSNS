@@ -10,6 +10,7 @@ import Sidebar from './components/Sidebar'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import NewAccountPage from './components/NewAccountPage'
+import UpdateProfilePage from './components/UpdateProfilePage'
 
 function App() {
 
@@ -60,6 +61,7 @@ function App() {
             <Route path="/search" element={<SearchPage />} />
             <Route path="/newPost" element={<NewPostPage />} />
             <Route path="/new-account" element={<NewAccountPage setJwt={setJwt}/>} />
+            <Route path="/UpdateProfilePage" element={<UpdateProfilePage/>} />
           </Routes>
         </BrowserRouter>
       </AuthContext.Provider>

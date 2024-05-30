@@ -32,6 +32,7 @@ public class ProfileController {
 	
 	@PostMapping
 	public ResponseEntity<String> save(Authentication authentication, @RequestBody ProfileDTO profile){
+		
 		workoutUserDetails details = (workoutUserDetails)authentication.getPrincipal();
 		UUID id = UUID.fromString(details.getUsername());
 		profile.setUserID(id.toString());
