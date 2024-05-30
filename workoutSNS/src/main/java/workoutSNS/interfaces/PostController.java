@@ -78,8 +78,15 @@ public class PostController {
 		}
 		return ResponseEntity.ok().body(result);
 	}
-	
-//	@GetMapping("/user/recent")
-//	public ResponseEntity<PostDTO> find
+
+	@GetMapping("/user/{id}/recent")
+	public ResponseEntity<PostDTO> findRecentPost(Authentication authentication, @PathVariable String id) {
+	    Post recentPost = ps.findRecentPostByUser(id);
+	    if (recentPost == null) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+	    }
+	    
+	    return ResponseEntity.ok().body(new PostDTO(recentPost));
+	}
 	
 }

@@ -65,4 +65,15 @@ public class PostService {
 		}
 		return results;
 	}
+	
+	public Post findRecentPostByUser(String id) {
+	    Optional<User> user = userRepository.findById(UUID.fromString(id));
+	    if (user.isPresent()) {
+	        List<Post> posts = postRepository.findTopByUserOrderByDateDesc(user.get());
+	        if (!posts.isEmpty()) {
+	            return posts.get(0);
+	        }
+	    }
+	    return null;
+	}
 }
