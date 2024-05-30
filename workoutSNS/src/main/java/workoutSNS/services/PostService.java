@@ -1,5 +1,7 @@
 package workoutSNS.services;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -8,12 +10,12 @@ import org.springframework.stereotype.Service;
 
 import workoutSNS.dtos.PostDTO;
 import workoutSNS.dtos.ProfileDTO;
-import workoutSNS.entities.Exercise;
 import workoutSNS.entities.Post;
 import workoutSNS.entities.Profile;
+import workoutSNS.entities.Tag;
 import workoutSNS.entities.User;
-import workoutSNS.repositories.ExerciseRepository;
 import workoutSNS.repositories.PostRepository;
+import workoutSNS.repositories.TagRepository;
 import workoutSNS.repositories.UserRepository;
 
 @Service
@@ -24,8 +26,9 @@ public class PostService {
 	@Autowired
 	UserRepository userRepository;
 	
-	@Autowired
-	ExerciseRepository exerciseRepository;
+	@Autowired 
+	TagRepository tagRepository;
+	
 	
 	public String save(PostDTO post) {
 		
@@ -36,10 +39,30 @@ public class PostService {
 		User user = maybeUser.get();
 		newPost.setUser(user);
 		
-		Optional<Exercise> maybeExercise = exerciseRepository.findById(post.getExerciseID());
-		Exercise exercise = maybeExercise.get();
-		newPost.setExercise(exercise);
 		postRepository.save(newPost);
+		
+		for(String t : post.getTags()) {
+			Tag newTag = new Tag();
+			newTag.setPost(newPost);
+			newTag.setTag(t);
+			tagRepository.save(newTag);
+		}
 		return newPost.getPostID().toString();
+	}
+	
+	public List<Post> findByUser(String id){
+		Optional<User> u = userRepository.findById(UUID.fromString(id));
+		if(u.isPresent())
+			return postRepository.findByUser(u.get());
+		return new ArrayList<Post>();
+	}
+	
+	public List<Post> findByTag(String tag) {
+		List<Post> results = new ArrayList<Post>();
+		List<Tag> tags = tagRepository.findByTag(tag);
+		for(Tag t: tags) {
+			results.add(t.getPost());
+		}
+		return results;
 	}
 }

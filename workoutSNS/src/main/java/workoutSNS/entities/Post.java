@@ -1,6 +1,7 @@
 package workoutSNS.entities;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import workoutSNS.dtos.PostDTO;
@@ -25,12 +27,14 @@ public class Post {
 	private LocalDate date;
 	private String title;
 	private String body;
-	@ManyToOne
-	@JoinColumn(name="exerciseID")
-	private Exercise exercise;
+	private String workout;
+	private String subworkout;
+	private String exercise;
 	private int duration;
 	private int calories;
 	private String tips;
+	@OneToMany(mappedBy="post")
+	List<Tag> tags;
 	
 	public Post() {}
 	
@@ -38,9 +42,44 @@ public class Post {
 		date = LocalDate.now();
 		title = core.getTitle();
 		body = core.getBody();
+		workout = core.getWorkout();
+		subworkout = core.getSubworkout();
+		exercise = core.getExercise();
 		duration = core.getDuration();
 		calories = core.getCalories();
 		tips = core.getTips();
+	}
+
+	public String getWorkout() {
+		return workout;
+	}
+
+	public void setWorkout(String workout) {
+		this.workout = workout;
+	}
+
+	public String getSubworkout() {
+		return subworkout;
+	}
+
+	public void setSubworkout(String subworkout) {
+		this.subworkout = subworkout;
+	}
+
+	public String getExercise() {
+		return exercise;
+	}
+
+	public void setExercise(String exercise) {
+		this.exercise = exercise;
+	}
+
+	public List<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
 	}
 
 	public Integer getPostID() {
@@ -83,13 +122,6 @@ public class Post {
 		this.body = body;
 	}
 
-	public Exercise getExercise() {
-		return exercise;
-	}
-
-	public void setExercise(Exercise exercise) {
-		this.exercise = exercise;
-	}
 
 	public int getDuration() {
 		return duration;
