@@ -76,4 +76,18 @@ public class PostService {
 	    }
 	    return null;
 	}
+	
+	public String likePost(String postid, UUID userid) {
+		Optional<User> user = userRepository.findById(userid);
+		Optional<Post> post = postRepository.findById(Integer.parseInt(postid));
+		Post likedPost = post.get();
+		likedPost.getLikes().add(user.get());
+		postRepository.save(likedPost);
+		return "like success";
+	}
+	
+	public String countLike(String postid) {
+		Optional<Post> post = postRepository.findById(Integer.parseInt(postid));
+		return String.valueOf(post.get().getLikes().size());
+	}
 }

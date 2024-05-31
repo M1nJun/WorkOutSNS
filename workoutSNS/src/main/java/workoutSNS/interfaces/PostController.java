@@ -20,6 +20,7 @@ import workoutSNS.dtos.PostDTO;
 import workoutSNS.dtos.ProfileDTO;
 import workoutSNS.entities.Post;
 import workoutSNS.entities.Profile;
+import workoutSNS.repositories.PostRepository;
 import workoutSNS.securities.workoutUserDetails;
 import workoutSNS.services.PostService;
 
@@ -89,4 +90,19 @@ public class PostController {
 	    return ResponseEntity.ok().body(new PostDTO(recentPost));
 	}
 	
+	//ready to get the id of the post
+	@PostMapping("/{postid}/like")
+	public ResponseEntity<String> likePost(Authentication authentication, @PathVariable String postid) {
+		workoutUserDetails details = (workoutUserDetails) authentication.getPrincipal();
+		UUID userid = UUID.fromString(details.getUsername());
+		String result = ps.likePost(postid, userid);
+		return ResponseEntity.ok().body(result);
+	}
+	
+	@GetMapping("/{postid}/like/count")
+	public ResponseEntity<String> countLike(Authentication authentication, @PathVariable String postid) {
+		String result = ps.countLike(postid);
+		
+		return ResponseEntity.ok().body(result);
+	}
 }

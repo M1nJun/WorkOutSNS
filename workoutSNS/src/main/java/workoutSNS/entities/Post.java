@@ -36,6 +36,9 @@ public class Post {
 	@OneToMany(mappedBy="post")
 	List<Tag> tags;
 	
+	@OneToMany
+    private List<User> likes;
+	
 	public Post() {}
 	
 	public Post(PostDTO core) {
@@ -146,5 +149,15 @@ public class Post {
 	public void setTips(String tips) {
 		this.tips = tips;
 	}
+
+	public List<User> getLikes() {
+		return likes;
+	}
+
+	public void setLikes(List<User> likes) {
+		this.likes = likes;
+	}
+	
+	
 	
 }

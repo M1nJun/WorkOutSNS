@@ -29,24 +29,24 @@ import workoutSNS.services.ProfileService;
 @CrossOrigin(origins = "*")
 public class ProfileController {
 	private ProfileService ps;
-
+	
 	public ProfileController(ProfileService ps) {
 		this.ps = ps;
 	}
-
+	
 	@PostMapping
-	public ResponseEntity<String> save(Authentication authentication, @RequestBody ProfileDTO profile) {
-
-		workoutUserDetails details = (workoutUserDetails) authentication.getPrincipal();
+	public ResponseEntity<String> save(Authentication authentication, @RequestBody ProfileDTO profile){
+		
+		workoutUserDetails details = (workoutUserDetails)authentication.getPrincipal();
 		UUID id = UUID.fromString(details.getUsername());
 		profile.setUserID(id.toString());
 		String key = ps.save(profile);
-		if (key.equals("Bad Id")) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Can not generate key");
-		}
-		return ResponseEntity.status(HttpStatus.CREATED).body(key);
+        if (key.equals("Bad Id")) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Can not generate key");
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(key);
 	}
-
+	
 	@GetMapping("/self")
 	public ResponseEntity<ProfileDTO> findByUserSelf(Authentication authentication) {
 		workoutUserDetails details = (workoutUserDetails) authentication.getPrincipal();
@@ -55,7 +55,7 @@ public class ProfileController {
 		ProfileDTO result = new ProfileDTO(profile);
 		return ResponseEntity.ok().body(result);
 	}
-
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<ProfileDTO> findByUser(Authentication authentication, @PathVariable String id) {
 		Profile profile = ps.findByUser(id);
@@ -65,7 +65,9 @@ public class ProfileController {
 	
 	@GetMapping(params = {"keyword"})
     public ResponseEntity<List<ProfileDTO>> findByKeyword(@RequestParam(value = "keyword") String keyword) {
-        List<Profile> profiles = ps.findByKeyword(keyword);
+        //if the user hasn't written down any keyword, just send back an empty list
+		if(keyword.length() == 0) return ResponseEntity.ok(new ArrayList<ProfileDTO>());
+		List<Profile> profiles = ps.findByKeyword(keyword);
         List<ProfileDTO> results = new ArrayList<ProfileDTO>();
 		for(Profile p : profiles) {
 			results.add(new ProfileDTO(p));
