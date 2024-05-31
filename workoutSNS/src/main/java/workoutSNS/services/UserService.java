@@ -1,6 +1,8 @@
 package workoutSNS.services;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,5 +44,26 @@ public class UserService {
 			u = null;
 		}
 		return u;	
+	}
+	
+	public String followUser(UUID follower, UUID followed) {
+		Optional<User> self = userRepository.findById(follower);
+		Optional<User> willFollow = userRepository.findById(followed);
+		
+		if (self.isPresent() && willFollow.isPresent()) {
+			self.get().getFollowings().add(willFollow.get());
+			willFollow.get().getFollowers().add(self.get());
+			
+			return "Follow Successful";
+		}
+		return "User doesn't exist";
+	}
+	
+	public Boolean followCheck(UUID self, UUID check) {
+		Optional<User> selfUser = userRepository.findById(self);
+		Optional<User> checkUser = userRepository.findById(check);
+
+        return selfUser.get().getFollowers().contains(checkUser.get());
+		
 	}
 }

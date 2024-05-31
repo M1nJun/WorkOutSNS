@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,11 +44,18 @@ public class ProfileController {
         return ResponseEntity.status(HttpStatus.CREATED).body(key);
 	}
 	
-	@GetMapping("/user")
+	@GetMapping("/self")
 	public ResponseEntity<ProfileDTO> findByUser(Authentication authentication) {
 		workoutUserDetails details = (workoutUserDetails) authentication.getPrincipal();
 		UUID id = UUID.fromString(details.getUsername());
 		Profile profile = ps.findByUser(id.toString());
+		ProfileDTO result = new ProfileDTO(profile);
+		return ResponseEntity.ok().body(result);
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<ProfileDTO> findByUser(Authentication authentication, @PathVariable String id) {
+		Profile profile = ps.findByUser(id);
 		ProfileDTO result = new ProfileDTO(profile);
 		return ResponseEntity.ok().body(result);
 	}
