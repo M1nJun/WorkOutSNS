@@ -69,7 +69,7 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.CREATED).body(result);
 	    }
 	    
-	    @GetMapping("/follow/check")
+	    @GetMapping("/follow/check/{id}")
 	    public ResponseEntity<Boolean> followCheck(Authentication authentication, @PathVariable String id) {
 	    	workoutUserDetails details = (workoutUserDetails) authentication.getPrincipal();
 			UUID selfId = UUID.fromString(details.getUsername());

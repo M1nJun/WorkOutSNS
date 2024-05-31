@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import workoutSNS.repositories.UserRepository;
 import workoutSNS.entities.User;
+import workoutSNS.dtos.PostDTO;
 import workoutSNS.dtos.ProfileDTO;
 import workoutSNS.entities.Profile;
 import workoutSNS.repositories.ProfileRepository;
@@ -52,4 +54,12 @@ public class ProfileService {
 			return u.get().getProfile();
 		return new Profile();
 	}
+	
+	public List<Profile> findByKeyword(String keyword) {
+        Optional<List<Profile>> profiles = profileRepository.findByKeyword(keyword);
+        if(!profiles.isEmpty()) {
+        	return profiles.get();
+        }
+        return new ArrayList<Profile>();
+    }
 }

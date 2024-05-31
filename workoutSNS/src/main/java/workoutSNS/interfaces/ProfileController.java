@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import workoutSNS.securities.workoutUserDetails;
+import workoutSNS.dtos.PostDTO;
 import workoutSNS.dtos.ProfileDTO;
+import workoutSNS.entities.Post;
 import workoutSNS.entities.Profile;
 import workoutSNS.services.ProfileService;
 
@@ -45,7 +48,7 @@ public class ProfileController {
 	}
 
 	@GetMapping("/self")
-	public ResponseEntity<ProfileDTO> findByUser(Authentication authentication) {
+	public ResponseEntity<ProfileDTO> findByUserSelf(Authentication authentication) {
 		workoutUserDetails details = (workoutUserDetails) authentication.getPrincipal();
 		UUID id = UUID.fromString(details.getUsername());
 		Profile profile = ps.findByUser(id.toString());
@@ -59,5 +62,15 @@ public class ProfileController {
 		ProfileDTO result = new ProfileDTO(profile);
 		return ResponseEntity.ok().body(result);
 	}
-
+	
+	@GetMapping(params = {"keyword"})
+    public ResponseEntity<List<ProfileDTO>> findByKeyword(@RequestParam(value = "keyword") String keyword) {
+        List<Profile> profiles = ps.findByKeyword(keyword);
+        List<ProfileDTO> results = new ArrayList<ProfileDTO>();
+		for(Profile p : profiles) {
+			results.add(new ProfileDTO(p));
+		}
+        return ResponseEntity.ok(results);
+    }
+	
 }

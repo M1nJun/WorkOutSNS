@@ -51,8 +51,14 @@ public class UserService {
 		Optional<User> willFollow = userRepository.findById(followed);
 		
 		if (self.isPresent() && willFollow.isPresent()) {
-			self.get().getFollowings().add(willFollow.get());
-			willFollow.get().getFollowers().add(self.get());
+			User selfUser = self.get();
+			User willFollowUser = willFollow.get();
+			
+			selfUser.getFollowings().add(willFollowUser);
+			willFollowUser.getFollowers().add(selfUser);
+			
+			userRepository.save(selfUser);
+	        userRepository.save(willFollowUser);
 			
 			return "Follow Successful";
 		}
@@ -63,7 +69,7 @@ public class UserService {
 		Optional<User> selfUser = userRepository.findById(self);
 		Optional<User> checkUser = userRepository.findById(check);
 
-        return selfUser.get().getFollowers().contains(checkUser.get());
+        return selfUser.get().getFollowings().contains(checkUser.get());
 		
 	}
 }
