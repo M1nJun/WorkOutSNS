@@ -1,15 +1,23 @@
 package workoutSNS.interfaces;
 
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import workoutSNS.securities.JwtService;
+import workoutSNS.securities.workoutUserDetails;
+import workoutSNS.entities.Profile;
 import workoutSNS.entities.User;
+import workoutSNS.dtos.ProfileDTO;
 import workoutSNS.dtos.UserDTO;
 import workoutSNS.services.UserService;
 
@@ -51,4 +59,22 @@ public class UserController {
 	        String token = jwtService.makeJwt(key);
 	        return ResponseEntity.status(HttpStatus.CREATED).body(token);
 	    }
+	    
+	    @PostMapping("/follow/{id}")
+	    public ResponseEntity<String> followUser(Authentication authentication, @PathVariable String id) {
+	    	workoutUserDetails details = (workoutUserDetails) authentication.getPrincipal();
+			UUID selfId = UUID.fromString(details.getUsername());
+			UUID willFollowId = UUID.fromString(id);
+			String result = us.followUser(selfId, willFollowId);
+			return ResponseEntity.status(HttpStatus.CREATED).body(result);
+	    }
+	    
+	    @GetMapping("/follow/check")
+	    public ResponseEntity<Boolean> followCheck(Authentication authentication, @PathVariable String id) {
+	    	workoutUserDetails details = (workoutUserDetails) authentication.getPrincipal();
+			UUID selfId = UUID.fromString(details.getUsername());
+			UUID checkId = UUID.fromString(id);
+			Boolean result = us.followCheck(selfId, checkId);
+			return ResponseEntity.ok().body(result);
+		}
 }

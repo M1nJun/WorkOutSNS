@@ -32,6 +32,13 @@ public class User {
 	@OneToOne(mappedBy="user")
 	private Profile profile;
 	
+	//people who are following you
+	@OneToMany
+    private List<User> followers;
+	//people who you are following
+    @OneToMany
+    private List<User> followings;
+	
 	public User() {}
 
 	public UUID getUserID() {
@@ -73,8 +80,27 @@ public class User {
 	public void setProfile(Profile profile) {
 		this.profile = profile;
 	}
+
+	public List<User> getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(List<User> followers) {
+		this.followers = followers;
+	}
+
+	public List<User> getFollowings() {
+		return followings;
+	}
+
+	public void setFollowings(List<User> followings) {
+		this.followings = followings;
+	}
+
 	
 	
+
+}
 	
 //	public List<Review> getReviews() {
 //		return reviews;
@@ -83,5 +109,3 @@ public class User {
 //	public void setReviews(List<Review> reviews) {
 //		this.reviews = reviews;
 //	}
-
-}
