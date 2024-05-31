@@ -8,6 +8,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import CreateIcon from '@mui/icons-material/Create';
 import logo from "../logo.png";
 import ProfilePagePostsSection from "./ProfilePagePostsSection";
+import UserProfileCard from "./UserProfileCard";
 
 function ProfilePage({ setJwt }) {
     const jwt = useContext(AuthContext);
@@ -38,24 +39,13 @@ function ProfilePage({ setJwt }) {
                     <img src={logo} alt="Logo" style={{ maxWidth: '20%', height: 'auto' }} />
                 </Box>
                 <Typography variant="h3" align="center" gutterBottom>
-                    {profile ? "Your Profile" : "Create Your Profile"}
+                    {profile ? null : "Create Your Profile"}
                 </Typography>
                 <Box component="form" noValidate autoComplete="off">
                     <Grid container spacing={2} justifyContent="center">
                         {profile ? (
                             <>
-                                <Grid item xs={6}>
-                                    <Typography variant="h6">First Name: {profile.firstname}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="h6">Last Name: {profile.lastname}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="h6">Email: {profile.email}</Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Typography variant="h6">Bio: {profile.bio}</Typography>
-                                </Grid>
+                                <UserProfileCard profile={profile}></UserProfileCard>
                                 <Grid item xs={4} align="center">
                                     <Button
                                         fullWidth
@@ -63,7 +53,7 @@ function ProfilePage({ setJwt }) {
                                         color="primary"
                                         component={Link}
                                         to="/UpdateProfilePage"
-                                        state={{ profile: profile }}  // Ensure profile is passed as state
+                                        state={{ profile: profile }} 
                                         startIcon={<UpdateIcon />}
                                     >
                                         Update Profile
@@ -126,7 +116,7 @@ function ProfilePage({ setJwt }) {
                     </Grid>
                 </Box>
             </Box>
-            {profile && <ProfilePagePostsSection />}
+            {profile && <ProfilePagePostsSection/>}
         </Container>
     );
 }

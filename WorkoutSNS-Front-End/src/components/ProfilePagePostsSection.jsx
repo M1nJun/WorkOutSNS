@@ -2,6 +2,7 @@ import React from 'react';
 import PostCard from './PostCard';
 import AuthContext from "../AuthContext";
 import { useState,useRef,useEffect,useContext } from "react";
+import { Container,Box,Grid }  from '@mui/material';
 
 function ProfilePagePostsSection(){
     const jwt = useContext(AuthContext);
@@ -29,16 +30,22 @@ function ProfilePagePostsSection(){
         })
         .catch((error) => console.error('Error fetching posts:', error));
     }
+
     return(
-        <>
-            <h2>Posts Section</h2>
-            <ul>
+        <Container maxWidth="sm">
+            <h1>Your Posts</h1>
+            <Box my={4}>
+                <Grid container spacing={1} justifyContent="center">
                 {posts.map((post) => (
-                    <PostCard key={post.postID} post={post}/>
+                    <Grid item xs={6}>
+                        <PostCard key={post.postID} post={post} notMe={false}/>
+                    </Grid>             
                 ))}
-            </ul>
-        </>
+                </Grid>
+            </Box>
+        </Container>
     )
 }
 
 export default ProfilePagePostsSection;
+
