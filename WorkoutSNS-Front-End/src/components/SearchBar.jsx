@@ -20,7 +20,7 @@ const SearchBar = ({ onSearch }) => {
     event.preventDefault();
     //user wont be allowed to submit search queries that are empty
     if (query.trim() !== '') {
-        onSearch(query);
+      onSearch(query);
     }
   };
 

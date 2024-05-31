@@ -1,33 +1,36 @@
 import React from 'react';
-import UserSearchResult from './UserSearchResult';
-import PostSearchResult from './PostSearchResult';
+import UserProfileCard from './UserProfileCard';
 
-const SearchResults = ({ results }) => {
-  const { userResults, postResults } = results;
+const SearchResults = ({ postsResults, userResults,searchForUsers }) => {
 
-  // Render user search results
-  const renderUserResults = (userResults) => {
-    // Render userResults...
-  };
 
-  // Render post search results
-  const renderPostResults = (postResults) => {
-    // Render postResults...
-  };
-
-  /*
-   {userResults.length > 0 ? renderPostResults(results) : <p>No results found</p>}
-   {postResults.length > 0 ? renderPostResults(results) : <p>No results found</p>}
-  */
-
-  return (
-    <div>
-      <h2>User Results</h2>
-     
-      <h2>Post Results</h2>
+  return(
+    <Container maxWidth="sm">
+      <h1>Search Results</h1>
+      <Box my={4}>
+        <Grid container spacing={1} justifyContent="center">
+        {searchForUsers ? 
+        ( userResults.map((userProfile)=> (
+          <Grid item xs={6}>
+            <UserProfileCard key={userProfile.userID} profile={userProfile}></UserProfileCard>
+          </Grid>
+        ))
       
-    </div>
-  );
+      ) : (
+          postsResults.map((post)=>{
+            <Grid item xs={6}>
+              <PostCard key={post.postID} post={post} notMe={true} ></PostCard>
+            </Grid>
+          })
+        )}  
+        </Grid>
+      </Box>
+    </Container>
+  
+    
+    
+  )
+
 };
 
 export default SearchResults;

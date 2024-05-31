@@ -5,41 +5,85 @@
 import {React,useState} from 'react';
 import SearchBar from './SearchBar';
 import SearchResults from './SearchResults';
+import { Button, Switch, FormControlLabel } from '@mui/material';
 
 const SearchPage = () => {
-    const [searchResults, setSearchResults] = useState([]);
+    const [userSearchResults, setUserSearchResults] = useState([]);
+    const [postsSearchResults, setPostsSearchResults] = useState([]);
+    const [searchForUsers,setSearchForUsers]=useState([false]);
     
-    const handleSearch = async (query) => {
-        try {
-          // Request user search results from backend
-          const headers = {"Authorization" : "Bearer "+jwt,"Content-type" : "application/json; charset=UTF-8"};
-          const userResponse = await fetch('http://localhost:8085/user/search', {
-            method: 'POST',
-            body: JSON.stringify({ query }),
-            headers: headers,
-          });
-          const userResults = await userResponse.json();
-      
-          // Request post search results from backend
-          const postResponse = await fetch('http://localhost:8085/post/search', {
-            method: 'POST',
-            body: JSON.stringify({ query }),
-            headers: headers,
-          });
-          const postResults = await postResponse.json();
-      
-          // Update state with search results
-          setSearchResults({ userResults, postResults });
-        } catch (error) {
-          console.error('Error fetching search results:', error);
+    const handleUserSearch = async (query) => {
+      try {
+        // Request user search results from backend
+        const userResponse = await fetch(`http://localhost:8085/user/search?name=${encodeURIComponent(query)}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+    
+        if (!userResponse.ok) {
+          throw new Error(`HTTP error! status: ${postResponse.status}`);
         }
+    
+        const userResults = await postResponse.json();
+        console.log(userResults);
+        setUserSearchResults(userResults);
+      } catch (error) {
+        console.error('Error fetching posts search results:', error);
+      }
+    };
+
+    const handlePostsSearch = async (query) => {
+      try {
+        // Request post search results from backend
+        const postResponse = await fetch(`http://localhost:8085/post?tag=${encodeURIComponent(query)}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+    
+        if (!postResponse.ok) {
+          throw new Error(`HTTP error! status: ${postResponse.status}`);
+        }
+    
+        const postResults = await postResponse.json();
+        console.log(postResults);
+        setPostsSearchResults(postResults);
+      } catch (error) {
+        console.error('Error fetching posts search results:', error);
+      }
+    };
+
+    const handleSearch = (query) => {
+      if (searchForUsers) {
+        handleUserSearch(query);
+      } else {
+        handlePostsSearch(query);
+      }
+    };
+
+    const toggleSearchMode = () => {
+      setSearchForUsers((prev) => !prev);
     };
 
     return(
         <>
         <p>search page</p>
+        <FormControlLabel
+        control={
+          <Switch
+            checked={searchForUsers}
+            onChange={toggleSearchMode}
+            name="searchMode"
+            color="primary"
+          />
+        }
+        label={searchForUsers ? "Search for Users" : "Search for Posts"}
+        />
         <SearchBar onSearch={handleSearch}></SearchBar>
-        <SearchResults results={searchResults}></SearchResults>
+        <SearchResults postsResults={postsSearchResults} userResults={userSearchResults} searchForUsers={searchForUsers}></SearchResults>
         </>
     );
 };

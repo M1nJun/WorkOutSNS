@@ -18,7 +18,7 @@ function ProfilePage({ setJwt }) {
 
     function getProfile() {
         const headers = { "Authorization": "Bearer " + jwt };
-        fetch("http://localhost:8085/profile/user", { method: "GET", headers: headers })
+        fetch("http://localhost:8085/profile/self", { method: "GET", headers: headers })
             .then(silentJSON)
             .then(response => { setProfile(response) });
     }

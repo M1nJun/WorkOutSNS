@@ -39,8 +39,10 @@ const PostCard = ({ post, notMe }) => {
         caption,
         tips,
         duration,
-        calories,
+        calories
     } = post;
+
+    //get userID
 
     const username = "me";
 
