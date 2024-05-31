@@ -26,24 +26,24 @@ import workoutSNS.services.ProfileService;
 @CrossOrigin(origins = "*")
 public class ProfileController {
 	private ProfileService ps;
-	
+
 	public ProfileController(ProfileService ps) {
 		this.ps = ps;
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<String> save(Authentication authentication, @RequestBody ProfileDTO profile){
-		
-		workoutUserDetails details = (workoutUserDetails)authentication.getPrincipal();
+	public ResponseEntity<String> save(Authentication authentication, @RequestBody ProfileDTO profile) {
+
+		workoutUserDetails details = (workoutUserDetails) authentication.getPrincipal();
 		UUID id = UUID.fromString(details.getUsername());
 		profile.setUserID(id.toString());
 		String key = ps.save(profile);
-        if (key.equals("Bad Id")) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Can not generate key");
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body(key);
+		if (key.equals("Bad Id")) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Can not generate key");
+		}
+		return ResponseEntity.status(HttpStatus.CREATED).body(key);
 	}
-	
+
 	@GetMapping("/self")
 	public ResponseEntity<ProfileDTO> findByUser(Authentication authentication) {
 		workoutUserDetails details = (workoutUserDetails) authentication.getPrincipal();
@@ -52,12 +52,12 @@ public class ProfileController {
 		ProfileDTO result = new ProfileDTO(profile);
 		return ResponseEntity.ok().body(result);
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<ProfileDTO> findByUser(Authentication authentication, @PathVariable String id) {
 		Profile profile = ps.findByUser(id);
 		ProfileDTO result = new ProfileDTO(profile);
 		return ResponseEntity.ok().body(result);
 	}
-	
+
 }
