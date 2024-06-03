@@ -10,27 +10,29 @@ import { Button, Switch, FormControlLabel } from '@mui/material';
 const SearchPage = () => {
     const [userSearchResults, setUserSearchResults] = useState([]);
     const [postsSearchResults, setPostsSearchResults] = useState([]);
-    const [searchForUsers,setSearchForUsers]=useState([false]);
+    const [searchForUsers,setSearchForUsers]=useState(false);
     
     const handleUserSearch = async (query) => {
       try {
         // Request user search results from backend
-        const userResponse = await fetch(`http://localhost:8085/user/search?name=${encodeURIComponent(query)}`, {
+        const userResponse = await fetch(`http://localhost:8085/profile?keyword=${encodeURIComponent(query)}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
         });
-    
+
+        console.log(userResponse);
+
         if (!userResponse.ok) {
-          throw new Error(`HTTP error! status: ${postResponse.status}`);
+          throw new Error(`HTTP error! status: ${userResponse.status}`);
         }
     
-        const userResults = await postResponse.json();
+        const userResults = await userResponse.json();
         console.log(userResults);
         setUserSearchResults(userResults);
       } catch (error) {
-        console.error('Error fetching posts search results:', error);
+        console.error('Error fetching user search results:', error);
       }
     };
 
@@ -43,16 +45,17 @@ const SearchPage = () => {
             'Content-Type': 'application/json',
           },
         });
-    
+
         if (!postResponse.ok) {
-          throw new Error(`HTTP error! status: ${postResponse.status}`);
+          throw new Error('Empty response from server');
         }
-    
+
         const postResults = await postResponse.json();
         console.log(postResults);
         setPostsSearchResults(postResults);
       } catch (error) {
         console.error('Error fetching posts search results:', error);
+        console.log('Query:', query);
       }
     };
 

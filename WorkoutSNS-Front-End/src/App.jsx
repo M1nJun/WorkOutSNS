@@ -11,6 +11,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import NewAccountPage from './components/NewAccountPage'
 import UpdateProfilePage from './components/UpdateProfilePage'
+import UserProfilePage from './components/UserProfilePage'
 
 function App() {
 
@@ -62,6 +63,7 @@ function App() {
             <Route path="/newPost" element={<NewPostPage />} />
             <Route path="/new-account" element={<NewAccountPage setJwt={setJwt}/>} />
             <Route path="/UpdateProfilePage" element={<UpdateProfilePage/>} />
+            <Route path="/UserProfilePage" element={<UserProfilePage></UserProfilePage>}></Route>
           </Routes>
         </BrowserRouter>
       </AuthContext.Provider>

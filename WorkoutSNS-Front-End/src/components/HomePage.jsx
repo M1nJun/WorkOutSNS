@@ -37,7 +37,7 @@ function HomePage({ setJwt }) {
     })
       .then(response =>{ if(response.status==200) response.text().then(data =>confirmLogin(data))})
       .catch((error) => {
-        Console.log(error);
+        console.log(error);
         alert("Login failed");
       });
   }

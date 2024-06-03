@@ -1,7 +1,8 @@
 import React from 'react';
-import { Card, CardContent, Typography, Grid, Avatar, CardHeader} from '@mui/material';
+import { Button, Card, CardContent, Typography, Grid, Avatar, CardHeader} from '@mui/material';
 import { styled } from '@mui/system';
-import userCardBackgroundImage from "../userCardBackgroundImage.jpeg";
+import { Link } from 'react-router-dom';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   backgroundColor: 'dark-grey', // Dark background color
@@ -25,7 +26,7 @@ const StyledBio = styled(Typography)(({ theme }) => ({
   marginTop: theme.spacing(1),
 }));
 
-const UserProfileCard = ({ profile }) => {
+const UserProfileCard = ({ profile, notMe }) => {
   return (
     <StyledCard>
         <CardHeader
@@ -49,6 +50,18 @@ const UserProfileCard = ({ profile }) => {
                     {profile.bio}
                 </StyledBio>
                 </Grid>
+                {notMe?(<Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                component={Link}
+                to="/UserProfilePage"
+                state={{ profile: profile }} 
+                startIcon={<VisibilityIcon />}
+                  >
+                  View Profile
+                </Button>):(null)}
+
             </Grid>
         </CardContent>
   </StyledCard>

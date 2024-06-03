@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
+import Collapse from '@mui/material/Collapse';   
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -16,6 +16,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import andrew from '../andrew.jpg';
 import AddReactionIcon from '@mui/icons-material/AddReaction';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import AuthContext from '@/AuthContext';
+import { useContext, useState } from "react";
+import Avatar from '@mui/material/Avatar';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -29,7 +33,9 @@ const ExpandMore = styled((props) => {
 }));
 
 const PostCard = ({ post, notMe }) => {
-    
+    const jwt = useContext(AuthContext);
+    const [likesCount,setLikesCount]=useState(0);
+    const [followStatus,setFollowStatus]=useState(false);
     const {
         title,
         tags,
@@ -39,12 +45,98 @@ const PostCard = ({ post, notMe }) => {
         caption,
         tips,
         duration,
-        calories
+        calories,
+        postID,
+        userID
     } = post;
 
-    //get userID
-
     const username = "me";
+
+    // useEffect(() => {
+    //     getPostLikes();
+    //     checkFollow();
+    // }, [jwt, postID, userID]);
+    
+
+    function checkFollow(){
+        fetch('http://localhost:8085/user/follow/check/'+userID, {
+            method: "POST",
+            headers: {
+              "Authorization" : "Bearer "+ jwt,
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          })
+          .then(response => {
+            if (response.ok) {
+                setFollowStatus(response.json);
+            }
+            })
+            .catch((error) => {
+                console.log(error);
+                alert("Login failed");
+              });
+    }
+
+    function postFollow(){
+        fetch('http://localhost:8085/user/follow/'+userID, {
+            method: "POST",
+            headers: {
+              "Authorization" : "Bearer "+ jwt,
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          })
+          .then(response => {
+            if (response.ok) {
+                setFollowStatus(true);
+            }
+            })
+          .catch((error) => {
+            console.log(error);
+            alert("Login failed");
+          });
+    }
+
+    function getPostLikes(){
+        fetch('http://localhost:8085/post/'+postID+'/like/count', {
+            method: "POST",
+            headers: {
+              "Authorization" : "Bearer "+ jwt,
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          })
+          .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+            })
+            .then(data => {
+                setLikesCount(data);
+            })
+          .catch((error) => {
+            console.log(error);
+            alert("Login failed");
+          });
+      }
+        
+        function postLikes(){
+          fetch('http://localhost:8085/post/'+postID+'/like', {
+            method: "POST",
+            headers: {
+              "Authorization" : "Bearer "+ jwt,
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          })
+          .then(response => {
+            if (response.ok) {
+                setLikesCount(likesCount + 1);
+            }
+            })
+          .catch((error) => {
+            console.log(error);
+            alert("Login failed");
+          });
+        }
 
 
     const [expanded, setExpanded] = React.useState(false);
@@ -73,16 +165,30 @@ const PostCard = ({ post, notMe }) => {
                 <Typography variant="body2" color="text.secondary">
                     {caption}
                 </Typography>
+               
+                {notMe && !followStatus ? (
+                    <Button
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        onClick={postFollow}
+                    >
+                        Follow
+                    </Button>
+                ) : notMe && followStatus ? (
+                    <Typography variant="body2" color="text.secondary">
+                        Followed <CheckCircleIcon style={{ color: 'green', verticalAlign: 'middle' }} />
+                    </Typography>
+                ) : null}
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
+                <IconButton aria-label="add to favorites" onClick={postLikes}>
                     <FavoriteIcon />
                 </IconButton>
-                {notMe ? (
-                    <IconButton aria-label="follow">
-                        <AddReactionIcon />
-                    </IconButton>
-                ) : null}
+                <Typography variant="body2" color="text.secondary">
+                    {likesCount}
+                </Typography>
+              
                 <ExpandMore
                     expand={expanded}
                     onClick={handleExpandClick}
