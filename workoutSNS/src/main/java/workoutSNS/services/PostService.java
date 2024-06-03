@@ -81,6 +81,9 @@ public class PostService {
 		Optional<User> user = userRepository.findById(userid);
 		Optional<Post> post = postRepository.findById(Integer.parseInt(postid));
 		Post likedPost = post.get();
+		if (likedPost.getLikes().contains(user.get())) {
+			return "user already liked the post";
+		}
 		likedPost.getLikes().add(user.get());
 		postRepository.save(likedPost);
 		return "like success";

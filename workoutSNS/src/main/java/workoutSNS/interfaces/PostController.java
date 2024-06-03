@@ -96,6 +96,9 @@ public class PostController {
 		workoutUserDetails details = (workoutUserDetails) authentication.getPrincipal();
 		UUID userid = UUID.fromString(details.getUsername());
 		String result = ps.likePost(postid, userid);
+		if (result == "user already liked the post") {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
+		}
 		return ResponseEntity.ok().body(result);
 	}
 	
