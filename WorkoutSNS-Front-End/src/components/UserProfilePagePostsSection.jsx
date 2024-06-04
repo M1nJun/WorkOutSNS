@@ -6,11 +6,12 @@ import PostCard from './PostCard';
 
 
 function UserProfilePagePostsSection({profile}){
-    const jwt = useContext(AuthContext);
+    const {jwt,setJwt} = useContext(AuthContext);
     const [posts, setPosts] = useState([]);
     const [hasFetched, setHasFetched] = useState(false);
     const [followStatus,setFollowStatus]=useState(false);
     const {userID} = profile;
+    console.log(userID);
 
     useEffect(() => {
         if (jwt && !hasFetched) {
@@ -61,24 +62,22 @@ function UserProfilePagePostsSection({profile}){
     }
 
 
-    function checkFollow(){
-        fetch('http://localhost:8085/user/follow/check/'+userID, {
-            method: "POST",
+    function checkFollow() {
+        fetch(`http://localhost:8085/user/follow/check/${userID}`, {
+            method: "GET",  // Changed to GET
             headers: {
-              "Authorization" : "Bearer "+ jwt,
-              "Content-type": "application/json; charset=UTF-8",
+                "Authorization": `Bearer ${jwt}`,
+                "Content-type": "application/json; charset=UTF-8"
             },
-          })
-          .then(response => {
-            if (response.ok) {
-                setFollowStatus(response.json);
-            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                setFollowStatus(data);  // Ensure the follow status is set correctly
             })
             .catch((error) => {
                 console.log(error);
-                alert("Login failed");
-              });
-
+                alert("Check follow status failed");
+            });
     }
 
     return(
@@ -96,20 +95,26 @@ function UserProfilePagePostsSection({profile}){
                     Follow
                 </Button>
                 ):(
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="text.primary">
                         Followed <CheckCircleIcon style={{ color: 'green', verticalAlign: 'middle' }} />
                     </Typography>
                 )
             }
            
         </Grid>
-            <Grid container spacing={1} justifyContent="center">
-            {posts.map((post) => (
-                <Grid item xs={6}>
-                    <PostCard key={post.postID} post={post} notMe={true}/>
-                </Grid>             
-            ))}
-            </Grid>
+        {posts.length === 0 ? (
+                    <Typography marginTop={2} variant="body2" color="text.primary" align="center">
+                        This user doesn't have any posts.
+                    </Typography>
+                ) : (
+                    <Grid container spacing={1} justifyContent="center">
+                        {posts.map((post) => (
+                            <Grid item xs={6} key={post.postID}>
+                                <PostCard post={post} notMe={true} />
+                            </Grid>
+                        ))}
+                    </Grid>
+                )}
             
         </Box>
     </Container>

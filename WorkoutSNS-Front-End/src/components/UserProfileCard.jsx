@@ -27,27 +27,28 @@ const StyledBio = styled(Typography)(({ theme }) => ({
 }));
 
 const UserProfileCard = ({ profile, notMe }) => {
+  const {firstname,lastname,bio,email} = profile;
   return (
     <StyledCard>
         <CardHeader
             avatar={
                 <StyledAvatar>
-                {profile.firstname.charAt(0)}{profile.lastname.charAt(0)}
+                {firstname.charAt(0)}{lastname.charAt(0)}
                 </StyledAvatar>
             }
-            title={`${profile.firstname} ${profile.lastname}`}
+            title={`${firstname} ${lastname}`}
             titleTypographyProps={{ align: 'center', variant: 'h6' }}
         />
         <CardContent>
             <Grid container spacing={1} alignItems="center">
                 <StyledGridItem item xs={12}>
                 <Typography variant="body1" align="center">
-                    {profile.email}
+                    {email}
                 </Typography>
                 </StyledGridItem>
                 <Grid item xs={12}>
                 <StyledBio variant="body2" align="center">
-                    {profile.bio}
+                    {bio}
                 </StyledBio>
                 </Grid>
                 {notMe?(<Button

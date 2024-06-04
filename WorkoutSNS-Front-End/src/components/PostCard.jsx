@@ -33,7 +33,7 @@ const ExpandMore = styled((props) => {
 }));
 
 const PostCard = ({ post, notMe }) => {
-    const jwt = useContext(AuthContext);
+    const {jwt,setJwt} = useContext(AuthContext);
     const [likesCount,setLikesCount]=useState(0);
     const [followStatus,setFollowStatus]=useState(false);
     const {
@@ -52,29 +52,28 @@ const PostCard = ({ post, notMe }) => {
 
     const username = "me";
 
-    // useEffect(() => {
-    //     getPostLikes();
-    //     checkFollow();
-    // }, [jwt, postID, userID]);
+    useEffect(() => {
+        getPostLikes();
+        checkFollow();
+    }, [jwt, postID, userID]);
     
 
-    function checkFollow(){
-        fetch('http://localhost:8085/user/follow/check/'+userID, {
-            method: "POST",
+    function checkFollow() {
+        fetch(`http://localhost:8085/user/follow/check/${userID}`, {
+            method: "GET",  
             headers: {
-              "Authorization" : "Bearer "+ jwt,
-              "Content-type": "application/json; charset=UTF-8",
+                "Authorization": `Bearer ${jwt}`,
+                "Content-type": "application/json; charset=UTF-8"
             },
-          })
-          .then(response => {
-            if (response.ok) {
-                setFollowStatus(response.json);
-            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                setFollowStatus(data);  // Ensure the follow status is set correctly
             })
             .catch((error) => {
                 console.log(error);
-                alert("Login failed");
-              });
+                alert("Check follow status failed");
+            });
     }
 
     function postFollow(){
@@ -98,7 +97,7 @@ const PostCard = ({ post, notMe }) => {
 
     function getPostLikes(){
         fetch('http://localhost:8085/post/'+postID+'/like/count', {
-            method: "POST",
+            method: "GET",
             headers: {
               "Authorization" : "Bearer "+ jwt,
               "Content-type": "application/json; charset=UTF-8",

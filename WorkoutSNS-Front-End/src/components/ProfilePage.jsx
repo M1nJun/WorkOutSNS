@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useContext } from "react";
 import { Link } from 'react-router-dom';
 import AuthContext from "../AuthContext";
-import { silentJSON, processAlert } from "../FetchRoutines";
+import { processAlert, silentJSON } from "../FetchRoutines";
 import { Button, TextField, Box, Container, Typography, Grid } from '@mui/material';
 import UpdateIcon from '@mui/icons-material/Update';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -10,25 +10,72 @@ import logo from "../logo.png";
 import ProfilePagePostsSection from "./ProfilePagePostsSection";
 import UserProfileCard from "./UserProfileCard";
 
-function ProfilePage({ setJwt }) {
-    const jwt = useContext(AuthContext);
+function ProfilePage() {
+    const { jwt, setJwt } = useContext(AuthContext);
+    console.log(jwt);
     const [profile, setProfile] = useState(null);
 
-    useEffect(() => { getProfile() }, []);
+    const bioInput = useRef();
+    const firstnameInput = useRef();
+    const lastnameInput = useRef();
+    const emailInput = useRef();
 
-    function getProfile() {
-        const headers = { "Authorization": "Bearer " + jwt };
-        fetch("http://localhost:8085/profile/self", { method: "GET", headers: headers })
+    useEffect(() => {
+        if (jwt) {
+            getProfile();
+        }
+    }, [jwt]);
+
+    const getProfile = () => {
+        const headers = { "Authorization": `Bearer ${jwt}` };
+        fetch("http://localhost:8085/profile/self", { method: "GET", headers })
             .then(silentJSON)
-            .then(response => { setProfile(response) });
-    }
+            .then(response => {
+                setProfile(response);
+            })
+            .catch(error => {
+                console.error('Error fetching profile:', error);
+            });
+    };
 
-    function handleLogout() {
+    const createProfile = () => {
+        const headers = {
+            "Authorization": `Bearer ${jwt}`,
+            "Content-type": "application/json; charset=UTF-8"
+        };
+        const toPost = {
+            firstname: firstnameInput.current.value,
+            lastname: lastnameInput.current.value,
+            email: emailInput.current.value,
+            bio: bioInput.current.value
+        };
+
+        fetch("http://localhost:8085/profile", {
+            method: "POST",
+            body: JSON.stringify(toPost),
+            headers
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Profile creation failed");
+                }
+                return processAlert(response, "Profile created.");
+            })
+            .then(() => {
+                getProfile(); // Fetch updated profile
+                console.log(profile);
+            })
+            .catch(error => {
+                console.error('Error creating profile:', error);
+            });
+    };
+
+    const handleLogout = () => {
         alert("You are logged out of your account.");
         setJwt('');
-    }
+    };
 
-    if (jwt.length === 0) {
+    if (!jwt) {
         return <p>You are not logged in to your account.</p>;
     }
 
@@ -45,7 +92,7 @@ function ProfilePage({ setJwt }) {
                     <Grid container spacing={2} justifyContent="center">
                         {profile ? (
                             <>
-                                <UserProfileCard profile={profile}></UserProfileCard>
+                                <UserProfileCard profile={profile} />
                                 <Grid item xs={4} align="center">
                                     <Button
                                         fullWidth
@@ -53,7 +100,7 @@ function ProfilePage({ setJwt }) {
                                         color="primary"
                                         component={Link}
                                         to="/UpdateProfilePage"
-                                        state={{ profile: profile }} 
+                                        state={{ profile }}
                                         startIcon={<UpdateIcon />}
                                     >
                                         Update Profile
@@ -67,6 +114,7 @@ function ProfilePage({ setJwt }) {
                                         fullWidth
                                         label="First Name"
                                         variant="outlined"
+                                        inputRef={firstnameInput}
                                     />
                                 </Grid>
                                 <Grid item xs={6}>
@@ -74,6 +122,7 @@ function ProfilePage({ setJwt }) {
                                         fullWidth
                                         label="Last Name"
                                         variant="outlined"
+                                        inputRef={lastnameInput}
                                     />
                                 </Grid>
                                 <Grid item xs={6}>
@@ -81,6 +130,7 @@ function ProfilePage({ setJwt }) {
                                         fullWidth
                                         label="Email"
                                         variant="outlined"
+                                        inputRef={emailInput}
                                     />
                                 </Grid>
                                 <Grid item xs={6}>
@@ -88,6 +138,7 @@ function ProfilePage({ setJwt }) {
                                         fullWidth
                                         label="Bio"
                                         variant="outlined"
+                                        inputRef={bioInput}
                                     />
                                 </Grid>
                                 <Grid item xs={4} align="center">
@@ -96,6 +147,7 @@ function ProfilePage({ setJwt }) {
                                         variant="contained"
                                         color="primary"
                                         startIcon={<CreateIcon />}
+                                        onClick={createProfile}
                                     >
                                         Create Profile
                                     </Button>
@@ -116,7 +168,7 @@ function ProfilePage({ setJwt }) {
                     </Grid>
                 </Box>
             </Box>
-            {profile && <ProfilePagePostsSection/>}
+            {profile && <ProfilePagePostsSection />}
         </Container>
     );
 }

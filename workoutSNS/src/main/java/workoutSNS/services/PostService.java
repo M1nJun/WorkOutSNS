@@ -77,6 +77,21 @@ public class PostService {
 	    return null;
 	}
 	
+	public List<Post> findRecentPostsOfFollowings(String id){
+		User user = new User();
+		Optional<User> maybeUser = userRepository.findById(UUID.fromString(id));
+		if(!maybeUser.isPresent()) 
+			return null;
+		user = maybeUser.get();
+		List<User> followings = user.getFollowings();
+		List<Post> followingsPosts = new ArrayList<Post>();
+		for (User f : followings) {
+			List<Post> singleFollowingsPosts = postRepository.findTopByUserOrderByDateDesc(f);
+			followingsPosts.addAll(singleFollowingsPosts);
+		}
+		return followingsPosts;
+	}
+	
 	public String likePost(String postid, UUID userid) {
 		Optional<User> user = userRepository.findById(userid);
 		Optional<Post> post = postRepository.findById(Integer.parseInt(postid));

@@ -19,9 +19,9 @@ import {
   import { Visibility, VisibilityOff } from "@mui/icons-material";
   import logo from "../logo.png";
 
-const NewAccountPage = ({ setJwt }) => {
+const NewAccountPage = () => {
 
-    const jwt = useContext(AuthContext);
+  const {jwt,setJwt} = useContext(AuthContext);
     const [showPassword, setShowPassword] = useState(false);
 
     let nameInput = useRef(null);

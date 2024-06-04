@@ -8,6 +8,7 @@ import logo from "../logo.png";
 import { styled } from '@mui/system';
 import ConfirmationPage from './ConfirmationPage';
 const NewPostPage = () =>{
+    const {jwt,setJwt} = useContext(AuthContext);
     const [progress, setProgress] = useState(0);
     const [postCreated, setPostCreated] = useState(false);
 
@@ -43,10 +44,10 @@ const NewPostPage = () =>{
         },
     }));
 
-    //you need to be logged in to be able to post
-    const jwt = useContext(AuthContext);
+
 
     function createNewPost() {
+        console.log(jwt);
         const headers = {"Authorization" : "Bearer "+ jwt,"Content-type" : "application/json; charset=UTF-8"};
         const toPost = {
             title: titleInput.current.value,

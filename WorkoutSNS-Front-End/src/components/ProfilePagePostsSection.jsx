@@ -5,7 +5,7 @@ import { useState,useRef,useEffect,useContext } from "react";
 import { Container,Box,Grid }  from '@mui/material';
 
 function ProfilePagePostsSection(){
-    const jwt = useContext(AuthContext);
+    const {jwt,setJwt} = useContext(AuthContext);
     const [posts, setPosts] = useState([]);
     const [hasFetched, setHasFetched] = useState(false);
     useEffect(() => {

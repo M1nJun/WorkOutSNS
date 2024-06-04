@@ -18,8 +18,8 @@ import { Link } from 'react-router-dom';
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import logo from "../logo.png";
 
-function HomePage({ setJwt }) {
-  const jwt = useContext(AuthContext);
+function HomePage() {
+  const {jwt,setJwt} = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
 
   function confirmLogin(jwt) {
@@ -27,20 +27,29 @@ function HomePage({ setJwt }) {
     setJwt(jwt);
   }
 
-  function handleLogin(user) {
-    fetch("http://localhost:8085/user/login", {
-      method: "POST",
-      body: JSON.stringify(user),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-      .then(response =>{ if(response.status==200) response.text().then(data =>confirmLogin(data))})
-      .catch((error) => {
-        console.log(error);
-        alert("Login failed");
+  const handleLogin = async (user) => {
+    try {
+      const response = await fetch("http://localhost:8085/user/login", {
+        method: "POST",
+        body: JSON.stringify(user),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
       });
-  }
+
+      if (response.status === 200) {
+        const data = await response.text();
+        console.log(data);
+        confirmLogin(data);
+      } else {
+        alert("Login failed");
+      }
+    } catch (error) {
+      console.log(error);
+      alert("Login failed");
+    }
+  };
+  
 
   let nameInput = useRef(null);
   let passwordInput = useRef(null);

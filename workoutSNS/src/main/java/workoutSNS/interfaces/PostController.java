@@ -90,6 +90,19 @@ public class PostController {
 	    return ResponseEntity.ok().body(new PostDTO(recentPost));
 	}
 	
+	@GetMapping("/followings/recent/posts")
+	public ResponseEntity<List<PostDTO>> findRecentPostofFollowings(Authentication authentication) {
+		workoutUserDetails details = (workoutUserDetails) authentication.getPrincipal();
+		UUID id = UUID.fromString(details.getUsername());
+		List<Post> followingsPosts = ps.findRecentPostsOfFollowings(id.toString());
+		List<PostDTO> results = new ArrayList<PostDTO>();
+		for (Post p: followingsPosts) {
+			results.add(new PostDTO(p));
+		}
+		return ResponseEntity.ok().body(results);
+	}
+	
+	
 	//ready to get the id of the post
 	@PostMapping("/{postid}/like")
 	public ResponseEntity<String> likePost(Authentication authentication, @PathVariable String postid) {

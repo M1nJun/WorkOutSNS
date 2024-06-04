@@ -28,6 +28,7 @@ public class SecurityConfig {
         .sessionManagement(management -> management
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.POST, "/user", "/user/login").permitAll()
+        		.requestMatchers(HttpMethod.GET, "/post", "/profile").permitAll()
         		.requestMatchers(HttpMethod.GET, "/restaurant/{id}", "/restaurant/all").permitAll()
                 .anyRequest().authenticated()
                 )

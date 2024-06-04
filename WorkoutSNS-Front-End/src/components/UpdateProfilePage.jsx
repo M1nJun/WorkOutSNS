@@ -7,7 +7,7 @@ import AuthContext from "../AuthContext";
 import { silentJSON, processAlert } from "../FetchRoutines";
 
 function UpdateProfilePage() {
-    const jwt = useContext(AuthContext);
+    const {jwt,setJwt} = useContext(AuthContext);
     const firstNameInput = useRef();
     const lastNameInput = useRef();
     const emailInput = useRef();
