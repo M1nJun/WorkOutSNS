@@ -108,4 +108,12 @@ public class PostService {
 		Optional<Post> post = postRepository.findById(Integer.parseInt(postid));
 		return String.valueOf(post.get().getLikes().size());
 	}
+	
+	public Boolean checkLike(String postid, UUID userid) {
+		Optional<User> user = userRepository.findById(userid);
+		Optional<Post> post = postRepository.findById(Integer.parseInt(postid));
+		
+		return post.get().getLikes().contains(user.get());
+
+	}
 }

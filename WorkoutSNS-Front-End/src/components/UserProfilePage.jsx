@@ -20,7 +20,7 @@ function UserProfilePage(){
                 <Box component="form" noValidate autoComplete="off">
                     <Grid container spacing={2} justifyContent="center">
                         <Grid item xs={8} align="center">
-                            <UserProfileCard profile={profile} notMe={true}></UserProfileCard>
+                            <UserProfileCard profile={profile} notMe={true} viewProfile={false}></UserProfileCard>
                         </Grid>
                         <Grid  item xs={12} align="center">
                             <UserProfilePagePostsSection profile={profile}></UserProfilePagePostsSection>

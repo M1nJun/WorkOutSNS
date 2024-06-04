@@ -2,8 +2,10 @@ package workoutSNS.interfaces;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -20,7 +22,9 @@ import workoutSNS.dtos.PostDTO;
 import workoutSNS.dtos.ProfileDTO;
 import workoutSNS.entities.Post;
 import workoutSNS.entities.Profile;
+import workoutSNS.entities.User;
 import workoutSNS.repositories.PostRepository;
+import workoutSNS.repositories.UserRepository;
 import workoutSNS.securities.workoutUserDetails;
 import workoutSNS.services.PostService;
 
@@ -29,6 +33,7 @@ import workoutSNS.services.PostService;
 @CrossOrigin(origins = "*")
 public class PostController {
 	private PostService ps;
+
 	
 	public PostController(PostService ps) {
 		this.ps = ps;
@@ -118,6 +123,15 @@ public class PostController {
 	@GetMapping("/{postid}/like/count")
 	public ResponseEntity<String> countLike(Authentication authentication, @PathVariable String postid) {
 		String result = ps.countLike(postid);
+		
+		return ResponseEntity.ok().body(result);
+	}
+	
+	@GetMapping("/{postid}/like/check")
+	public ResponseEntity<Boolean> checkLike(Authentication authentication, @PathVariable String postid) {
+		workoutUserDetails details = (workoutUserDetails) authentication.getPrincipal();
+		UUID id = UUID.fromString(details.getUsername());
+		Boolean result = ps.checkLike(postid, id);
 		
 		return ResponseEntity.ok().body(result);
 	}

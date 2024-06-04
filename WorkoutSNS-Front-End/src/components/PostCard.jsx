@@ -36,6 +36,7 @@ const PostCard = ({ post, notMe }) => {
     const {jwt,setJwt} = useContext(AuthContext);
     const [likesCount,setLikesCount]=useState(0);
     const [followStatus,setFollowStatus]=useState(false);
+    const [liked, setLiked] = useState(false);
     const {
         title,
         tags,
@@ -53,10 +54,27 @@ const PostCard = ({ post, notMe }) => {
     const username = "me";
 
     useEffect(() => {
+        checkLiked();
         getPostLikes();
-        checkFollow();
     }, [jwt, postID, userID]);
     
+    function checkLiked(){
+        fetch(`http://localhost:8085/post/`+postID+'/like/check', {
+            method: "GET",  
+            headers: {
+                "Authorization": `Bearer ${jwt}`,
+                "Content-type": "application/json; charset=UTF-8"
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                setLiked(data);  // Ensure the follow status is set correctly
+            })
+            .catch((error) => {
+                console.log(error);
+                alert("Check post like status failed");
+            });
+    }
 
     function checkFollow() {
         fetch(`http://localhost:8085/user/follow/check/${userID}`, {
@@ -112,6 +130,7 @@ const PostCard = ({ post, notMe }) => {
             .then(data => {
                 setLikesCount(data);
             })
+            
           .catch((error) => {
             console.log(error);
             alert("Login failed");
@@ -129,6 +148,7 @@ const PostCard = ({ post, notMe }) => {
           .then(response => {
             if (response.ok) {
                 setLikesCount(likesCount + 1);
+                setLiked(true);
             }
             })
           .catch((error) => {
@@ -182,7 +202,7 @@ const PostCard = ({ post, notMe }) => {
             </CardContent>
             <CardActions disableSpacing>
                 <IconButton aria-label="add to favorites" onClick={postLikes}>
-                    <FavoriteIcon />
+                    <FavoriteIcon style={{ color: liked ? red[500] : 'inherit' }} />
                 </IconButton>
                 <Typography variant="body2" color="text.secondary">
                     {likesCount}

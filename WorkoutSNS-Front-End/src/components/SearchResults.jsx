@@ -19,7 +19,7 @@ const SearchResults = ({ postsResults, userResults, searchForUsers }) => {
                         userResults.length > 0 ? (
                             userResults.map((userProfile) => (
                                 <Grid item xs={6} key={userProfile.userID}>
-                                    <UserProfileCard profile={userProfile} notMe={true} />
+                                    <UserProfileCard profile={userProfile} notMe={true} viewProfile={true} />
                                 </Grid>
                             ))
                         ) : (

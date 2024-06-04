@@ -26,7 +26,7 @@ const StyledBio = styled(Typography)(({ theme }) => ({
   marginTop: theme.spacing(1),
 }));
 
-const UserProfileCard = ({ profile, notMe }) => {
+const UserProfileCard = ({ profile, notMe, viewProfile }) => {
   const {firstname,lastname,bio,email} = profile;
   return (
     <StyledCard>
@@ -51,7 +51,7 @@ const UserProfileCard = ({ profile, notMe }) => {
                     {bio}
                 </StyledBio>
                 </Grid>
-                {notMe?(<Button
+                {(notMe && viewProfile) ?(<Button
                 fullWidth
                 variant="contained"
                 color="primary"
